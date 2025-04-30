@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="YBb-Ae-hTQ">
-                                <rect key="frame" x="142" y="374" width="91" height="94"/>
+                                <rect key="frame" x="151" y="386" width="91" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="94" id="A4D-AQ-W8N"/>
                                     <constraint firstAttribute="width" constant="91" id="vDs-l4-6Tb"/>
@@ -28,8 +28,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="Blue"/>
                         <constraints>
-                            <constraint firstItem="YBb-Ae-hTQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="142" id="Stb-WP-Dpv"/>
-                            <constraint firstItem="YBb-Ae-hTQ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="315" id="xt3-4W-Ba6"/>
+                            <constraint firstItem="YBb-Ae-hTQ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4bU-gy-dyR"/>
+                            <constraint firstItem="YBb-Ae-hTQ" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="7" id="fxi-or-HT6"/>
                         </constraints>
                     </view>
                 </viewController>
