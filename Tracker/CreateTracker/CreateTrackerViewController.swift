@@ -8,14 +8,17 @@
 import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
-    func createNewTracker(tracker: Tracker)
+    func createNewTracker(tracker: Tracker, category: String?)
 }
 
 final class CreateTrackerViewController: UIViewController {
     weak var delegate: CreateTrackerViewControllerDelegate?
     var irregularEvent: Bool = false
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private let errorReporting = ErrorReporting()
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
+    private let testCategory = "Test Category"
     private var selectedDays: [DayOfWeek] = []
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
@@ -288,7 +291,14 @@ final class CreateTrackerViewController: UIViewController {
                 color: color,
                 emoji: emoji,
                 schedule: self.selectedDays)
-            delegate?.createNewTracker(tracker: newTracker)
+            delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
+            do {
+                try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
+            } catch {
+                errorReporting.showAlert(
+                    message: "Error create new tracker to category: \(error)",
+                    controller: self)
+            }
         } else {
             let newTracker = Tracker(
                 id: UUID(),
@@ -296,7 +306,14 @@ final class CreateTrackerViewController: UIViewController {
                 color: color,
                 emoji: emoji,
                 schedule: DayOfWeek.allCases)
-            delegate?.createNewTracker(tracker: newTracker)
+            delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
+            do {
+                try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
+            } catch {
+                errorReporting.showAlert(
+                    message: "Error create new tracker to category: \(error)",
+                    controller: self)
+            }
         }
         self.view.window?.rootViewController?.dismiss(animated: true)
     }
@@ -353,8 +370,8 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let categoryViewController = CategoryViewController()
-            present(categoryViewController, animated: true, completion: nil)
+            selectedCategory = testCategory
+            createTrackerTableView.reloadData()
         } else
         if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
