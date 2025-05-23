@@ -19,7 +19,7 @@ final class DaysValueTransformer: ValueTransformer {
             let encode = try JSONEncoder().encode(days)
             return encode
         } catch {
-            assertionFailure("Failed to transform `WeekDay` to `JSON`")
+            print("Failed to transform `WeekDay` to `JSON`")
             return nil
         }
     }

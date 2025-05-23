@@ -43,7 +43,7 @@ final class TrackersViewController: UIViewController {
     }()
     
     private let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.allowsMultipleSelection = false
         collectionView.showsVerticalScrollIndicator = false
