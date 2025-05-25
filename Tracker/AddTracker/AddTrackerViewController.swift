@@ -8,7 +8,7 @@
 import UIKit
 
 final class AddTrackerViewController: UIViewController {
-    var trackersViewController = TrackersViewController()
+    weak var trackersViewController: TrackersViewController?
     private let titleAddTrackersLabel: UILabel = {
         let label = UILabel()
         label.text = "Создание трекера"

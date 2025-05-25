@@ -8,6 +8,10 @@
 import UIKit
 
 final class TrackersViewController: UIViewController {
+    private var trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private var trackerRecordStore = TrackerRecordStore()
+    private let errorReporting = ErrorReporting()
     private var trackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
@@ -39,7 +43,7 @@ final class TrackersViewController: UIViewController {
     }()
     
     private let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.allowsMultipleSelection = false
         collectionView.showsVerticalScrollIndicator = false
@@ -85,10 +89,9 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTapGestureRecognizer()
-        visibleCategories = categories
+        coreDataSetup()
+        reloadVisibleCategories()
         showInitialStub()
-        
-        testCategory()
         setupNavBar()
         setupTrackersView()
         setupCollectionView()
@@ -96,9 +99,13 @@ final class TrackersViewController: UIViewController {
         dateFiltering()
     }
     
-    private func testCategory() {
-        let testCategory = TrackerCategory(title: "Test category", trackers: trackers)
-        categories.append(testCategory)
+    private func coreDataSetup() {
+        trackerStore.delegate = self
+        trackers = trackerStore.trackers
+        trackerCategoryStore.delegate = self
+        categories = trackerCategoryStore.trackerCategories
+        trackerRecordStore.delegate = self
+        completedTrackers = trackerRecordStore.trackerRecords
     }
     
     private func setupNavBar() {
@@ -121,7 +128,6 @@ final class TrackersViewController: UIViewController {
         view.addSubview(searchLabel)
         view.addSubview(collectionView)
     }
-    
     
     private func setupCollectionView() {
         collectionView.dataSource = self
@@ -168,7 +174,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func dateSelection() {
         dateFiltering()
-        reloadVisibleCategories()
+        filteringTrackers()
     }
     
     private func showInitialStub() {
@@ -193,16 +199,22 @@ final class TrackersViewController: UIViewController {
         self.selectedDay = filterWeekday
     }
     
+    private func filteringTrackers() {
+        reloadVisibleCategories()
+        showSearchStub()
+        collectionView.reloadData()
+    }
+    
     private func reloadVisibleCategories() {
         visibleCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
                 let textCondition = (self.filterText ?? "").isEmpty ||
                     tracker.title.contains(self.filterText ?? "")
                 let dateCondition = tracker.schedule.contains { day in
-                    guard let cerrentDate = self.selectedDay else {
+                    guard let currentDate = self.selectedDay else {
                         return true
                     }
-                    return day.rawValue == cerrentDate
+                    return day.rawValue == currentDate
                 }
                 return textCondition && dateCondition
             }
@@ -216,8 +228,6 @@ final class TrackersViewController: UIViewController {
                 trackers: trackers
             )
         }
-        showSearchStub()
-        collectionView.reloadData()
     }
     
     private func isTrackerCompletedToday(id: UUID) -> Bool {
@@ -241,7 +251,28 @@ extension TrackersViewController: UISearchControllerDelegate {
 extension TrackersViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         self.filterText = searchController.searchBar.searchTextField.text?.description
-        reloadVisibleCategories()
+        filteringTrackers()
+    }
+}
+
+extension TrackersViewController: TrackerStoreDelegate {
+    func store() {
+        trackers = trackerStore.trackers
+        collectionView.reloadData()
+    }
+}
+// MARK: - TrackerCategoryStoreDelegate
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    func categoryStore() {
+        categories = trackerCategoryStore.trackerCategories
+        collectionView.reloadData()
+    }
+}
+// MARK: - TrackerRecordStoreDelegate
+extension TrackersViewController: TrackerRecordStoreDelegate {
+    func recordStore() {
+        completedTrackers = trackerRecordStore.trackerRecords
+        collectionView.reloadData()
     }
 }
 
@@ -271,14 +302,25 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 }
 
 extension TrackersViewController: CreateTrackerViewControllerDelegate {
-    func createNewTracker(tracker: Tracker) {
-        self.categories = self.categories.map { testCategory in
-            var updateTrackers = testCategory.trackers
-            updateTrackers.append(tracker)
-            return TrackerCategory(title: testCategory.title, trackers: updateTrackers)
+    func createNewTracker(tracker: Tracker, category: String?) {
+        guard let newCategory = category else { return }
+        let savedCategory = self.categories.first { category in
+            category.title == newCategory
         }
-        reloadVisibleCategories()
-        collectionView.reloadData()
+        if savedCategory != nil {
+            self.categories = self.categories.map { category in
+                if (category.title == newCategory) {
+                    var updateTrackers = category.trackers
+                    updateTrackers.append(tracker)
+                    return TrackerCategory(title: category.title, trackers: updateTrackers)
+                } else {
+                    return TrackerCategory(title: category.title, trackers: category.trackers)
+                }
+            }
+        } else {
+            self.categories.append(TrackerCategory(title: newCategory, trackers: [tracker]))
+        }
+        filteringTrackers()
     }
 }
 

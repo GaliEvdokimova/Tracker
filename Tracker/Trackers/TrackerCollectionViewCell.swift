@@ -42,8 +42,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }()
     
     private lazy var pinTrackerButton: UIButton = {
-        let button = UIButton.systemButton(
-            with: UIImage(named: "Pin")!,
+        guard let image = UIImage(named: "Pin") else { return UIButton() }
+        
+                let button = UIButton.systemButton(
+            with: image,
             target: self,
             action: #selector(pinTrackerButtonTapped))
         button.tintColor = .ypWhiteDay
