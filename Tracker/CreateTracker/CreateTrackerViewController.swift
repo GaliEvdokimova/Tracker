@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
     func createNewTracker(tracker: Tracker, category: String?)
@@ -14,16 +15,16 @@ protocol CreateTrackerViewControllerDelegate: AnyObject {
 final class CreateTrackerViewController: UIViewController {
     weak var delegate: CreateTrackerViewControllerDelegate?
     var irregularEvent: Bool = false
-    private let trackerCategoryStore = TrackerCategoryStore()
     private let errorReporting = ErrorReporting()
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
-    private let testCategory = "Test Category"
     private var selectedDays: [DayOfWeek] = []
+    private let categoryViewController = CategoryViewController()
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
     private var isEmojiSelected: IndexPath? = nil
     private var isColorSelected: IndexPath? = nil
+    private var subscriptions = Set<AnyCancellable>()
     private let emojies = [
         "🙂","😻","🌺","🐶","❤️","😱",
         "😇","😡","🥶","🤔","🙌","🍔",
@@ -38,7 +39,7 @@ final class CreateTrackerViewController: UIViewController {
         .colorSelection16, .colorSelection17, .colorSelection18
     ]
     
-    private var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Новая привычка"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -292,13 +293,7 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: self.selectedDays)
             delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
-            do {
-                try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
-            } catch {
-                errorReporting.showAlert(
-                    message: "Error create new tracker to category: \(error)",
-                    controller: self)
-            }
+            categoryViewController.categoryViewModel.addNewTrackerToCategory(to: self.selectedCategory, tracker: newTracker)
         } else {
             let newTracker = Tracker(
                 id: UUID(),
@@ -307,13 +302,7 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: DayOfWeek.allCases)
             delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
-            do {
-                try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
-            } catch {
-                errorReporting.showAlert(
-                    message: "Error create new tracker to category: \(error)",
-                    controller: self)
-            }
+            categoryViewController.categoryViewModel.addNewTrackerToCategory(to: self.selectedCategory, tracker: newTracker)
         }
         self.view.window?.rootViewController?.dismiss(animated: true)
     }
@@ -356,8 +345,8 @@ extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func saveSelectedDays(list: [Int]) {
         for index in list {
             self.selectedDays.append(DayOfWeek.allCases[index])
-            self.createTrackerTableView.reloadData()
         }
+            self.createTrackerTableView.reloadData()
     }
 }
 
@@ -370,16 +359,20 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            selectedCategory = testCategory
-            createTrackerTableView.reloadData()
+            categoryViewController.categoryViewModel.selectedCategoryPublisher.sink { [weak self] category in
+                guard let self else { return }
+                self.selectedCategory = category?.title
+                self.createTrackerTableView.reloadData()
+            }.store(in: &subscriptions)
+            present(categoryViewController, animated: true)
         } else
         if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
             scheduleViewController.delegate = self
-            present(scheduleViewController, animated: true, completion: nil)
+            present(scheduleViewController, animated: true)
             selectedDays = []
         }
-        createTrackerTableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -416,7 +409,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         detailTextLabel.textColor = .ypGray
         
         if indexPath.row == 0 {
-            detailTextLabel.text = "" 
+            detailTextLabel.text = selectedCategory
         } else if indexPath.row == 1 {
             if selectedDays.count == 7 {
                 detailTextLabel.text = "Каждый день"

@@ -28,10 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let container = NSPersistentContainer(name: "TrackerModel")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // TODO: Заменить на реализацию кодом обработку ошибки:
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            
         })
         return container
     }()

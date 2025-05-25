@@ -62,7 +62,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    // Quantity management
     private let numberOfDaysLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
