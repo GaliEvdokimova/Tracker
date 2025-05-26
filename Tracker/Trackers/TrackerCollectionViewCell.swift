@@ -44,7 +44,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private lazy var pinTrackerButton: UIButton = {
         guard let image = UIImage(named: "Pin") else { return UIButton() }
         
-                let button = UIButton.systemButton(
+        let button = UIButton.systemButton(
             with: image,
             target: self,
             action: #selector(pinTrackerButtonTapped))

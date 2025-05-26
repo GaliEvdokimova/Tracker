@@ -5,22 +5,29 @@
 //  Created by Galina evdokimova on 25.05.2025.
 //
 
-import UIKit
 import Combine
 
 final class CategoryViewModel {
     private var trackerCategoryStore = TrackerCategoryStore()
-    private(set) var categories: [TrackerCategory] = []
+    private(set) var categories: [TrackerCategory] = [] {
+        didSet {
+            onCategoriesUpdated?()
+        }
+    }
+    
+    var selectedCategory: TrackerCategory? {
+        didSet {
+            onCategorySelected?(selectedCategory)
+        }
+    }
+    
+    var onCategoriesUpdated: (() -> Void)?
+    var onCategorySelected: ((TrackerCategory?) -> Void)?
     
     init() {
         trackerCategoryStore.delegate = self
         self.categories = trackerCategoryStore.trackerCategories
     }
-    
-    @Published private(set) var selectedCategory: TrackerCategory?
-        var selectedCategoryPublisher: AnyPublisher<TrackerCategory?, Never> {
-            $selectedCategory.eraseToAnyPublisher()
-        }
     
     func addCategory(_ name: String) {
         do {
@@ -31,15 +38,16 @@ final class CategoryViewModel {
     }
     
     func addNewTrackerToCategory(to title: String?, tracker: Tracker) {
-        do {
-            try self.trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
-        } catch {
-            print("Error add new tracker to category: \(error.localizedDescription)")
+            do {
+                try trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
+            } catch {
+                print("Error adding new tracker to category: \(error.localizedDescription)")
+            }
         }
-    }
     
     func selectCategory(_ index: Int) {
-        self.selectedCategory = self.categories[index]
+        guard index < categories.count else { return }
+        selectedCategory = categories[index]
     }
 }
 

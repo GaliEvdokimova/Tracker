@@ -19,7 +19,17 @@ final class CreateTrackerViewController: UIViewController {
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
     private var selectedDays: [DayOfWeek] = []
-    private let categoryViewController = CategoryViewController()
+    
+    private lazy var categoryViewController: CategoryViewController = {
+            let viewModel = CategoryViewModel()
+            let vc = CategoryViewController(viewModel: viewModel)
+        vc.categoryViewModel.onCategorySelected = { [weak self] (category: TrackerCategory?) in
+                self?.selectedCategory = category?.title
+                self?.createTrackerTableView.reloadData()
+            }
+            return vc
+        }()
+    
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
     private var isEmojiSelected: IndexPath? = nil
@@ -234,7 +244,7 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 16),
-
+            
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -346,7 +356,7 @@ extension CreateTrackerViewController: ScheduleViewControllerDelegate {
         for index in list {
             self.selectedDays.append(DayOfWeek.allCases[index])
         }
-            self.createTrackerTableView.reloadData()
+        self.createTrackerTableView.reloadData()
     }
 }
 
@@ -359,11 +369,6 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            categoryViewController.categoryViewModel.selectedCategoryPublisher.sink { [weak self] category in
-                guard let self else { return }
-                self.selectedCategory = category?.title
-                self.createTrackerTableView.reloadData()
-            }.store(in: &subscriptions)
             present(categoryViewController, animated: true)
         } else
         if indexPath.row == 1 {
@@ -399,9 +404,9 @@ extension CreateTrackerViewController: UITableViewDataSource {
         
         if indexPath.row == (irregularEvent ? 0 : 1) {
             cell.separatorInset = UIEdgeInsets(top: 0,
-                                                    left: 0,
-                                                    bottom: 0,
-                                                    right: 500)
+                                               left: 0,
+                                               bottom: 0,
+                                               right: 500)
         }
         
         guard let detailTextLabel = cell.detailTextLabel else { return cell }

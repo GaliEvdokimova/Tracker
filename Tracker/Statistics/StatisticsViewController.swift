@@ -34,7 +34,7 @@ final class StatisticsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

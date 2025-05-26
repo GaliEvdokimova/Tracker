@@ -51,7 +51,7 @@ final class OnboardingPageViewController: UIPageViewController {
         setupOnboardingPageView()
         setupOnboardingPageViewConstrains()
     }
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .darkContent
     }

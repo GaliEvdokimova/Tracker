@@ -9,7 +9,7 @@ import UIKit
 
 final class ColorsCollectionViewCell: UICollectionViewCell {
     static let identifier = "colorCell"
-
+    
     let colorView: UILabel = {
         let view = UILabel()
         view.layer.cornerRadius = 8
@@ -20,7 +20,7 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         contentView.addSubview(colorView)
         
         NSLayoutConstraint.activate([

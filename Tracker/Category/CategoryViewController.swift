@@ -8,7 +8,8 @@
 import UIKit
 
 final class CategoryViewController: UIViewController {
-    private(set) var categoryViewModel = CategoryViewModel()
+    let categoryViewModel: CategoryViewModel
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
@@ -19,7 +20,7 @@ final class CategoryViewController: UIViewController {
         return label
     }()
     
-    private let stubImage: UIImageView = {
+    private lazy var stubImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub tracker")
         imageView.layer.masksToBounds = true
@@ -27,7 +28,7 @@ final class CategoryViewController: UIViewController {
         return imageView
     }()
     
-    private let stubLabel: UILabel = {
+    private lazy var stubLabel: UILabel = {
         let label = UILabel()
         label.text = "Привычки и события можно\n объединять по смыслу"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -62,6 +63,16 @@ final class CategoryViewController: UIViewController {
         return button
     }()
     
+    init(viewModel: CategoryViewModel = CategoryViewModel()) {
+        self.categoryViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        setupBindings()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         categoryViewModel.categoryStore()
@@ -71,11 +82,22 @@ final class CategoryViewController: UIViewController {
         showInitialStub()
     }
     
+    private func setupBindings() {
+        categoryViewModel.onCategoriesUpdated = { [weak self] in
+            self?.categoryTableView.reloadData()
+            self?.showInitialStub()
+        }
+        
+        categoryViewModel.onCategorySelected = { [weak self] _ in
+            self?.dismiss(animated: true)
+        }
+    }
+    
     @objc
     private func didTapAddCategoryButton() {
         let createCategoryViewController = CreateCategoryViewController()
         createCategoryViewController.delegate = self
-        present(createCategoryViewController, animated: true, completion: nil)
+        present(createCategoryViewController, animated: true)
     }
     
     private func setupCategoryTableView() {
@@ -87,11 +109,9 @@ final class CategoryViewController: UIViewController {
     
     private func setupCategoryView() {
         view.backgroundColor = .ypWhiteDay
-        view.addSubview(titleLabel)
-        view.addSubview(stubImage)
-        view.addSubview(stubLabel)
-        view.addSubview(categoryTableView)
-        view.addSubview(addCategoryButton)
+        [titleLabel, stubImage, stubLabel, categoryTableView, addCategoryButton].forEach {
+            view.addSubview($0)
+        }
     }
     
     private func setupCategoryViewConstrains() {
@@ -125,7 +145,7 @@ final class CategoryViewController: UIViewController {
     }
 }
 
-extension CategoryViewController: UITableViewDelegate {
+extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -164,13 +184,8 @@ extension CategoryViewController: UITableViewDelegate {
             tableView.reloadData()
             tableView.deselectRow(at: indexPath, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.dismiss(animated: true)
-        }
     }
-}
 
-extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         return categoryViewModel.categories.count
@@ -204,8 +219,6 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
     func addNewCategory(category: String) {
         categoryViewModel.addCategory(category)
-        self.categoryTableView.reloadData()
-        showInitialStub()
     }
 }
 
