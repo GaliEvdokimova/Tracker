@@ -21,14 +21,14 @@ final class CreateTrackerViewController: UIViewController {
     private var selectedDays: [DayOfWeek] = []
     
     private lazy var categoryViewController: CategoryViewController = {
-            let viewModel = CategoryViewModel()
-            let vc = CategoryViewController(viewModel: viewModel)
+        let viewModel = CategoryViewModel()
+        let vc = CategoryViewController(viewModel: viewModel)
         vc.categoryViewModel.onCategorySelected = { [weak self] (category: TrackerCategory?) in
-                self?.selectedCategory = category?.title
-                self?.createTrackerTableView.reloadData()
-            }
-            return vc
-        }()
+            self?.selectedCategory = category?.title
+            self?.createTrackerTableView.reloadData()
+        }
+        return vc
+    }()
     
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
@@ -210,12 +210,12 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func createTrackerCollectionViewHeight() {
-        createTrackerCollectionView.collectionViewLayout.invalidateLayout()
-        createTrackerCollectionView.layoutIfNeeded()
-        collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
+            createTrackerCollectionView.collectionViewLayout.invalidateLayout()
+            createTrackerCollectionView.layoutIfNeeded()
+            collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
     }
     
-    private func setupCreateTrackerViewConstrains() {
+    func setupCreateTrackerViewConstrains() {
         limitTrackerNameLabelHeightContraint = limitTrackerNameLabel.heightAnchor.constraint(equalToConstant: 0)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
