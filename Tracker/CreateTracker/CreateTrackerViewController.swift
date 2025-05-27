@@ -212,6 +212,7 @@ final class CreateTrackerViewController: UIViewController {
     private func createTrackerCollectionViewHeight() {
             createTrackerCollectionView.collectionViewLayout.invalidateLayout()
             createTrackerCollectionView.layoutIfNeeded()
+            
             collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
     }
     
