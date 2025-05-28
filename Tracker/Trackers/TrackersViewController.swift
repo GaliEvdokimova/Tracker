@@ -18,7 +18,7 @@ final class TrackersViewController: UIViewController {
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDay: Int?
     private var filterText: String?
-
+    
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
         date.datePickerMode = .date
@@ -141,27 +141,27 @@ final class TrackersViewController: UIViewController {
     
     private func setupTrackersViewConstrains() {
         NSLayoutConstraint.activate([
-        initialImage.heightAnchor.constraint(equalToConstant: 80),
-        initialImage.widthAnchor.constraint(equalToConstant: 80),
-        initialImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        initialImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        
-        initialLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        initialLabel.topAnchor.constraint(equalTo: initialImage.bottomAnchor, constant: 8),
-                    
-        searchImage.heightAnchor.constraint(equalToConstant: 80),
-        searchImage.widthAnchor.constraint(equalToConstant: 80),
-        searchImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        searchImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        
-        searchLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        searchLabel.topAnchor.constraint(equalTo: searchImage.bottomAnchor, constant: 8),
-        
-        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-    ])
+            initialImage.heightAnchor.constraint(equalToConstant: 80),
+            initialImage.widthAnchor.constraint(equalToConstant: 80),
+            initialImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            initialImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            initialLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            initialLabel.topAnchor.constraint(equalTo: initialImage.bottomAnchor, constant: 8),
+            
+            searchImage.heightAnchor.constraint(equalToConstant: 80),
+            searchImage.widthAnchor.constraint(equalToConstant: 80),
+            searchImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            searchLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchLabel.topAnchor.constraint(equalTo: searchImage.bottomAnchor, constant: 8),
+            
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     @objc
@@ -209,7 +209,7 @@ final class TrackersViewController: UIViewController {
         visibleCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
                 let textCondition = (self.filterText ?? "").isEmpty ||
-                    tracker.title.contains(self.filterText ?? "")
+                tracker.title.contains(self.filterText ?? "")
                 let dateCondition = tracker.schedule.contains { day in
                     guard let currentDate = self.selectedDay else {
                         return true
@@ -222,7 +222,7 @@ final class TrackersViewController: UIViewController {
             if trackers.isEmpty {
                 return nil
             }
-    
+            
             return TrackerCategory(
                 title: category.title,
                 trackers: trackers
@@ -282,7 +282,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let selectedDate = datePicker.date
         let currentCalendar = Calendar.current
         let trackerRecord = TrackerRecord(trackerId: id, date: selectedDate)
-    
+        
         guard currentCalendar.compare(selectedDate,
                                       to: currentDate,
                                       toGranularity: .day
@@ -352,7 +352,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             completedDays: completedDays,
             indexPath: indexPath
         )
-
+        
         return cell
     }
     

@@ -44,7 +44,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private lazy var pinTrackerButton: UIButton = {
         guard let image = UIImage(named: "Pin") else { return UIButton() }
         
-                let button = UIButton.systemButton(
+        let button = UIButton.systemButton(
             with: image,
             target: self,
             action: #selector(pinTrackerButtonTapped))
@@ -62,7 +62,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    // Quantity management
     private let numberOfDaysLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -161,10 +160,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .ypWhiteDay
         
         contentView.addSubview(trackerCard)
-        contentView.addSubview(emojiBackgroundView)
-        contentView.addSubview(emojiLabel)
-        contentView.addSubview(pinTrackerButton)
-        contentView.addSubview(trackerDescriptionLabel)
+        trackerCard.addSubview(emojiBackgroundView)
+        trackerCard.addSubview(emojiLabel)
+        trackerCard.addSubview(pinTrackerButton)
+        trackerCard.addSubview(trackerDescriptionLabel)
         contentView.addSubview(numberOfDaysLabel)
         contentView.addSubview(plusTrackerButton)
     }
@@ -174,15 +173,16 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             trackerCard.topAnchor.constraint(equalTo: contentView.topAnchor),
             trackerCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trackerCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            trackerCard.heightAnchor.constraint(equalToConstant: 90),
-            
-            emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
-            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
+            trackerCard.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7),
             
             emojiBackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
             emojiBackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
+            emojiBackgroundView.trailingAnchor.constraint(lessThanOrEqualTo: trackerCard.trailingAnchor, constant: -12),
             emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24),
             emojiBackgroundView.widthAnchor.constraint(equalToConstant: 24),
+            
+            emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
             
             pinTrackerButton.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -4),
             pinTrackerButton.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
@@ -191,15 +191,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             
             trackerDescriptionLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
             trackerDescriptionLabel.bottomAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: -12),
-            trackerDescriptionLabel.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
-            
-            numberOfDaysLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            numberOfDaysLabel.centerYAnchor.constraint(equalTo: plusTrackerButton.centerYAnchor),
+            trackerDescriptionLabel.trailingAnchor.constraint(lessThanOrEqualTo: trackerCard.trailingAnchor, constant: -12),
             
             plusTrackerButton.topAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: 8),
             plusTrackerButton.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
             plusTrackerButton.heightAnchor.constraint(equalToConstant: 34),
-            plusTrackerButton.widthAnchor.constraint(equalToConstant: 34)
+            plusTrackerButton.widthAnchor.constraint(equalToConstant: 34),
+            
+            numberOfDaysLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
+            numberOfDaysLabel.centerYAnchor.constraint(equalTo: plusTrackerButton.centerYAnchor),
+            numberOfDaysLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            
         ])
     }
 }

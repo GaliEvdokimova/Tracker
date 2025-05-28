@@ -9,7 +9,7 @@ import UIKit
 
 final class AddTrackerViewController: UIViewController {
     weak var trackersViewController: TrackersViewController?
-    private let titleAddTrackersLabel: UILabel = {
+    private lazy var titleAddTrackersLabel: UILabel = {
         let label = UILabel()
         label.text = "Создание трекера"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
