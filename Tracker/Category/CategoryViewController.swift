@@ -219,7 +219,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return configuration
     }
-
+    
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         return categoryViewModel.categories.count

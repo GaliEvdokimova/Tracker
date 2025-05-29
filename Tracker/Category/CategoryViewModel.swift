@@ -10,14 +10,14 @@ import Combine
 final class CategoryViewModel {
     private var trackerCategoryStore = TrackerCategoryStore()
     private(set) var categories: [TrackerCategory] = []
-        
-        @Observable
-        private(set) var selectedCategory: TrackerCategory?
-        
-        init() {
-            trackerCategoryStore.delegate = self
-            self.categories = trackerCategoryStore.trackerCategories
-        }
+    
+    @Observable
+    private(set) var selectedCategory: TrackerCategory?
+    
+    init() {
+        trackerCategoryStore.delegate = self
+        self.categories = trackerCategoryStore.trackerCategories
+    }
     
     func addCategory(_ name: String) {
         do {
@@ -28,12 +28,12 @@ final class CategoryViewModel {
     }
     
     func addNewTrackerToCategory(to title: TrackerCategory, tracker: Tracker) {
-            do {
-                try trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
-            } catch {
-                print("Error adding new tracker to category: \(error.localizedDescription)")
-            }
+        do {
+            try trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
+        } catch {
+            print("Error adding new tracker to category: \(error.localizedDescription)")
         }
+    }
     
     func deleteCategory(_ category: TrackerCategory) {
         do {
@@ -56,7 +56,7 @@ final class CategoryViewModel {
     func selectCategory(_ index: Int) {
         selectedCategory = categories[index]
     }
-
+    
     func checkingSavedCategory(_ title: String) -> Bool {
         return categories.contains(where: { $0.title == title })
     }

@@ -70,7 +70,7 @@ final class CreateCategoryViewController: UIViewController {
         existingCategory = category
         createCategoryName.text = category.title
     }
-
+    
     @objc
     private func didTapCreateCategoryButton() {
         guard let newCategory = createCategoryName.text, !newCategory.isEmpty else {

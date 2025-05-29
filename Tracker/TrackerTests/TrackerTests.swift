@@ -14,8 +14,8 @@ final class TrackerTests: XCTestCase {
     func testTrackersViewControllerLight() throws {
         let trackersViewController = TrackersViewController()
         // Расскоментируйте
-//        trackersViewController.view.backgroundColor = .black
-
+        //        trackersViewController.view.backgroundColor = .black
+        
         assertSnapshot(
             matching: trackersViewController,
             as: .image(traits: .init(userInterfaceStyle: .light)))
@@ -24,8 +24,8 @@ final class TrackerTests: XCTestCase {
     func testTrackersViewControllerDark() throws {
         let trackersViewController = TrackersViewController()
         // Расскоментируйте
-//        trackersViewController.view.backgroundColor = .white
-
+        //        trackersViewController.view.backgroundColor = .white
+        
         assertSnapshot(
             matching: trackersViewController,
             as: .image(size: trackersViewController.preferredContentSize,

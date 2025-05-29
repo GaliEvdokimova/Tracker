@@ -223,9 +223,9 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func createTrackerCollectionViewHeight() {
-            createTrackerCollectionView.collectionViewLayout.invalidateLayout()
-            createTrackerCollectionView.layoutIfNeeded()
-            collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
+        createTrackerCollectionView.collectionViewLayout.invalidateLayout()
+        createTrackerCollectionView.layoutIfNeeded()
+        collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
     }
     
     func setupCreateTrackerViewConstrains() {
@@ -295,87 +295,87 @@ func editTracker(tracker: Tracker, category: TrackerCategory?, completedCount: I
         NSLocalizedString("daysCount", comment: ""), completedCount)
 }
 
-    private func trackerTypeIrregularEvent() {
-        if irregularEvent == true {
-            cellButtonText = ["Категория"]
-            self.titleLabel.text = "Новое нерегулярное событие"
-        }
+private func trackerTypeIrregularEvent() {
+    if irregularEvent == true {
+        cellButtonText = ["Категория"]
+        self.titleLabel.text = "Новое нерегулярное событие"
+    }
+}
+
+private func updateCreateButton() {
+    if createTrackerName.text?.isEmpty == true &&
+        irregularEvent == false ? selectedDays.count > 0 : true &&
+        isEmojiSelected != nil &&
+        isColorSelected != nil
+    {
+        createButton.isEnabled = true
+        createButton.backgroundColor = .ypBlack
+    } else {
+        createButton.isEnabled = false
+        createButton.backgroundColor = .ypGray
+    }
+}
+
+@objc
+private func cancelButtonTapped() {
+    dismiss(animated: true)
+}
+
+@objc
+private func createButtonTapped() {
+    guard let trackerName = createTrackerName.text, !trackerName.isEmpty else {
+        return
+    }
+    guard let selectedCategory = selectedCategory else {
+        return
+    }
+    guard let selectedEmoji = isEmojiSelected,
+          let selectedColor = isColorSelected else {
+        return
     }
     
-    private func updateCreateButton() {
-        if createTrackerName.text?.isEmpty == true &&
-            irregularEvent == false ? selectedDays.count > 0 : true &&
-            isEmojiSelected != nil &&
-            isColorSelected != nil
-        {
-            createButton.isEnabled = true
-            createButton.backgroundColor = .ypBlack
+    let emoji = emojies[selectedEmoji.row]
+    let color = colors[selectedColor.row]
+    
+    if irregularEvent == false {
+        guard !selectedDays.isEmpty else {
+            return
+        }
+        let newTracker = Tracker(
+            id: editTrackerId ?? UUID(),
+            title: trackerName,
+            color: color,
+            emoji: emoji,
+            schedule: self.selectedDays,
+            pinned: false)
+        if editTracker == true {
+            delegate?.updateTracker(
+                tracker: newTracker,
+                editingTracker: editingTracker,
+                category: selectedCategory.title)
+            delegate?.reloadCollectionView()
         } else {
-            createButton.isEnabled = false
-            createButton.backgroundColor = .ypGray
+            delegate?.createNewTracker(
+                tracker: newTracker,
+                category: selectedCategory.title)
+            categoryViewController.categoryViewModel.addTrackerToCategory(
+                to: selectedCategory,
+                tracker: newTracker)
         }
+    } else {
+        let newTracker = Tracker(
+            id: UUID(),
+            title: trackerName,
+            color: color,
+            emoji: emoji,
+            schedule: DayOfWeek.allCases,
+            pinned: false)
+        delegate?.createNewTracker(tracker: newTracker, category: selectedCategory.title)
+        categoryViewController.categoryViewModel.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
     }
-    
-    @objc
-    private func cancelButtonTapped() {
-        dismiss(animated: true)
-    }
-    
-    @objc
-    private func createButtonTapped() {
-        guard let trackerName = createTrackerName.text, !trackerName.isEmpty else {
-            return
-        }
-        guard let selectedCategory = selectedCategory else {
-            return
-        }
-        guard let selectedEmoji = isEmojiSelected,
-              let selectedColor = isColorSelected else {
-            return
-        }
-        
-        let emoji = emojies[selectedEmoji.row]
-        let color = colors[selectedColor.row]
-        
-        if irregularEvent == false {
-            guard !selectedDays.isEmpty else {
-                return
-            }
-            let newTracker = Tracker(
-                id: editTrackerId ?? UUID(),
-                title: trackerName,
-                color: color,
-                emoji: emoji,
-                schedule: self.selectedDays,
-                pinned: false)
-            if editTracker == true {
-                delegate?.updateTracker(
-                    tracker: newTracker,
-                    editingTracker: editingTracker,
-                    category: selectedCategory.title)
-                delegate?.reloadCollectionView()
-            } else {
-                delegate?.createNewTracker(
-                    tracker: newTracker,
-                    category: selectedCategory.title)
-                categoryViewController.categoryViewModel.addTrackerToCategory(
-                    to: selectedCategory,
-                    tracker: newTracker)
-            }
-        } else {
-            let newTracker = Tracker(
-                id: UUID(),
-                title: trackerName,
-                color: color,
-                emoji: emoji,
-                schedule: DayOfWeek.allCases,
-                pinned: false)
-            delegate?.createNewTracker(tracker: newTracker, category: selectedCategory.title)
-            categoryViewController.categoryViewModel.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
-        }
-        delegate?.reloadCollectionView()
-        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-    }
+    delegate?.reloadCollectionView()
+    self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+}
 }
 
 extension CreateTrackerViewController: UITextFieldDelegate {

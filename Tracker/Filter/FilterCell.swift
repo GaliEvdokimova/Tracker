@@ -9,7 +9,7 @@ import UIKit
 
 final class FilterCell: UITableViewCell {
     static let cellIdentifier = "FilterCell"
-  
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         backgroundColor = .ypBackground
