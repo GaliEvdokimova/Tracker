@@ -23,7 +23,7 @@ final class ScheduleCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(switcher)
         self.accessoryView = switcher
-        backgroundColor = .ypBackgroundDay
+        backgroundColor = .ypBackground
         clipsToBounds = true
         
         NSLayoutConstraint.activate([

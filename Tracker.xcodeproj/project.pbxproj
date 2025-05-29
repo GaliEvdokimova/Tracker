@@ -32,11 +32,6 @@
 			path = AnalyticsService;
 			sourceTree = "<group>";
 		};
-		20028FD92DE8AD17002E86D7 /* Filter */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Filter;
-			sourceTree = "<group>";
-		};
 		2030DCFE2DE821C0007E0B41 /* TrackerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TrackerTests;
@@ -69,7 +64,6 @@
 		20A788F92D8F190900BE4886 = {
 			isa = PBXGroup;
 			children = (
-				20028FD92DE8AD17002E86D7 /* Filter */,
 				20028EA72DE874F2002E86D7 /* AnalyticsService */,
 				2030DCFE2DE821C0007E0B41 /* TrackerTests */,
 				20A789042D8F190900BE4886 /* Tracker */,
@@ -102,7 +96,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				20028EA72DE874F2002E86D7 /* AnalyticsService */,
-				20028FD92DE8AD17002E86D7 /* Filter */,
 				2030DCFE2DE821C0007E0B41 /* TrackerTests */,
 				20A789042D8F190900BE4886 /* Tracker */,
 			);

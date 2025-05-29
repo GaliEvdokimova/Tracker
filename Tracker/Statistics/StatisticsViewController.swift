@@ -81,7 +81,7 @@ final class StatisticsViewController: UIViewController {
             statisticsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             statisticsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            statisticsLabel.topAnchor.constraint(equalTo: statisticsImage.bottomAnchor, constant: 8)
+            statisticsLabel.topAnchor.constraint(equalTo: statisticsImage.bottomAnchor, constant: 8),
             statisticsTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 77),
             statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
