@@ -13,12 +13,15 @@ protocol TrackerCollectionViewCellDelegate: AnyObject {
 }
 
 final class TrackerCollectionViewCell: UICollectionViewCell {
+    var trackerMenu: UIView {
+        return trackerCard
+    }
     static let identifier = "trackerCell"
     weak var delegate: TrackerCollectionViewCellDelegate?
     private var isCompletedToday: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
-    
+    private let analyticsService = AnalyticsService()
     private let trackerCard: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
@@ -35,7 +38,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private let emojiBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .ypWhiteDay.withAlphaComponent(0.3)
+        view.backgroundColor = .ypWhite.withAlphaComponent(0.3)
         view.layer.cornerRadius = 12
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -48,7 +51,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             with: image,
             target: self,
             action: #selector(pinTrackerButtonTapped))
-        button.tintColor = .ypWhiteDay
+        button.tintColor = .ypWhite
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -56,16 +59,23 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let trackerDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypWhiteDay
+        label.textColor = .ypWhite
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    private let quantitiManagmentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let numberOfDaysLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -83,7 +93,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private lazy var plusTrackerButton: UIButton = {
         let button = UIButton(type: .custom)
         button.layer.cornerRadius = 17
-        button.tintColor = .ypWhiteDay
+        button.tintColor = .ypWhite
         button.addTarget(self,
                          action: #selector(plusTrackerButtonTapped),
                          for: .touchUpInside)
@@ -103,11 +113,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc
-    private func pinTrackerButtonTapped() {
-    }
-    
-    @objc
     private func plusTrackerButtonTapped() {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId")
             return }
@@ -130,8 +137,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         trackerCard.backgroundColor = tracker.color
         trackerDescriptionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        pinTrackerButton.isHidden = true
-        numberOfDaysLabel.text = formattedDays(completedDays)
+        self.pinTrackerButton.isHidden = tracker.pinned ? false : true
+        numberOfDaysLabel.text = String.localizedStringWithFormat(NSLocalizedString("daysCount", comment: ""), completedDays)
         plusButtonSettings()
     }
     
@@ -145,27 +152,15 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         plusTrackerButton.setImage(image, for: .normal)
     }
     
-    private func formattedDays(_ completedDays: Int) -> String {
-        let number = completedDays % 10
-        if number == 1 && number != 0 {
-            return "\(completedDays) день"
-        } else if number <= 4 && number > 1 {
-            return "\(completedDays) дня"
-        } else {
-            return "\(completedDays) дней"
-        }
-    }
-    
     private func setupTrackerCollectionView() {
-        contentView.backgroundColor = .ypWhiteDay
-        
         contentView.addSubview(trackerCard)
+        contentView.addSubview(quantitiManagmentView)
         trackerCard.addSubview(emojiBackgroundView)
         trackerCard.addSubview(emojiLabel)
         trackerCard.addSubview(pinTrackerButton)
         trackerCard.addSubview(trackerDescriptionLabel)
-        contentView.addSubview(numberOfDaysLabel)
-        contentView.addSubview(plusTrackerButton)
+        quantitiManagmentView.addSubview(numberOfDaysLabel)
+        quantitiManagmentView.addSubview(plusTrackerButton)
     }
     
     private func setupTrackerCollectionViewConstrains() {
@@ -174,6 +169,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             trackerCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trackerCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             trackerCard.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7),
+            
+            quantitiManagmentView.topAnchor.constraint(equalTo: trackerCard.bottomAnchor),
+            quantitiManagmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            quantitiManagmentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            quantitiManagmentView.heightAnchor.constraint(equalToConstant: 58),
             
             emojiBackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
             emojiBackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
