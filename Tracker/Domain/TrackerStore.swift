@@ -23,6 +23,7 @@ protocol TrackerStoreDelegate: AnyObject {
 }
 
 final class TrackerStore: NSObject {
+    // MARK: - Public Properties
     weak var delegate: TrackerStoreDelegate?
     var trackers: [Tracker] {
         guard
@@ -31,7 +32,7 @@ final class TrackerStore: NSObject {
         else { return [] }
         return trackers
     }
-    
+    // MARK: - Private Properties
     private let colorMarshalling = UIColorMarshalling()
     private let daysValueTransformer = DaysValueTransformer()
     private let context: NSManagedObjectContext
@@ -49,7 +50,7 @@ final class TrackerStore: NSObject {
         try? controller.performFetch()
         return controller
     }()
-    
+    // MARK: - Initializers
     convenience override init() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             self.init()
@@ -119,7 +120,7 @@ final class TrackerStore: NSObject {
         let result = try context.fetch(fetchRequest)
         return result.first
     }
-    
+    // MARK: - Private Methods
     private func tracker(from trackersCoreData: TrackerCoreData) throws -> Tracker {
         guard let id = trackersCoreData.id else {
             throw TrackerStoreError.decodingErrorInvalidId
@@ -147,11 +148,11 @@ final class TrackerStore: NSObject {
             title: title,
             color: colorMarshalling.color(from: color),
             emoji: emoji,
-            schedule: schedule as! [DayOfWeek],
+            schedule: schedule as! [WeekDay],
             pinned: pinned)
     }
 }
-
+// MARK: - NSFetchedResultsControllerDelegate
 extension TrackerStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>
@@ -159,4 +160,3 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
         delegate?.store()
     }
 }
-

@@ -8,15 +8,15 @@
 import UIKit
 
 final class CategoryViewController: UIViewController {
-    private(set) var categoryViewModel: CategoryViewModel()
+    private(set) var categoryViewModel = CategoryViewModel()
     private let errorReporting = ErrorReporting()
-    
+    // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .ypBlack
-        label.ypbackgroundColor = .ypWhite
+        label.backgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,7 +42,7 @@ final class CategoryViewController: UIViewController {
     
     private lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
-        tableView.ypbackgroundColor = .ypWhite
+        tableView.backgroundColor = .ypWhite
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = true
@@ -59,12 +59,12 @@ final class CategoryViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.ypbackgroundColor = .ypBlack
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         categoryViewModel.categoryStore()
@@ -73,7 +73,7 @@ final class CategoryViewController: UIViewController {
         setupCategoryViewConstrains()
         showInitialStub()
     }
-    
+    // MARK: - Actions
     @objc
     private func didTapAddCategoryButton() {
         let createCategoryViewController = CreateCategoryViewController()
@@ -89,14 +89,13 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupCategoryView() {
-        view.ypbackgroundColor = .ypWhite
+        view.backgroundColor = .ypWhite
         view.addSubview(titleLabel)
         view.addSubview(stubImage)
         view.addSubview(stubLabel)
         view.addSubview(categoryTableView)
         view.addSubview(addCategoryButton)
     }
-    
     
     private func setupCategoryViewConstrains() {
         NSLayoutConstraint.activate([
@@ -122,7 +121,7 @@ final class CategoryViewController: UIViewController {
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
+    // MARK: - Private Methods
     private func showInitialStub() {
         let emptyCategories = categoryViewModel.categories.isEmpty
         categoryTableView.isHidden = emptyCategories
@@ -130,8 +129,8 @@ final class CategoryViewController: UIViewController {
         stubLabel.isHidden = !emptyCategories
     }
 }
-
-extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
+// MARK: - UITableViewDelegate
+extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -219,7 +218,9 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return configuration
     }
-    
+}
+// MARK: - UITableViewDataSource
+extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         return categoryViewModel.categories.count
@@ -249,10 +250,11 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 }
-
+// MARK: - CreateCategoryViewControllerDelegate
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
-    func addNewCategory(category: String) {
-        categoryViewModel.addCategory(category)
+    func reload() {
+        self.categoryTableView.reloadData()
+        showInitialStub()
     }
 }
 

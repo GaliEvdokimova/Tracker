@@ -122,6 +122,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2030DC812DE82116007E0B41 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				20A7199B2DEA21F400157BA4 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 20A789032D8F190900BE4886 /* Products */;
@@ -369,6 +370,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.18.4;
+			};
+		};
+		20A7199B2DEA21F400157BA4 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appmetrica/appmetrica-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

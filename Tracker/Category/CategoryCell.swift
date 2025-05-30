@@ -9,13 +9,13 @@ import UIKit
 
 final class CategoryCell: UITableViewCell {
     static let cellIdentifier = "CategoryCell"
-    
+  
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .ypbackground
+        backgroundColor = .ypBackground
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) wasn't implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 }

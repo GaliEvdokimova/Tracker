@@ -36,7 +36,6 @@ final class HeaderViewCell: UICollectionReusableView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) wasn't implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 }
-

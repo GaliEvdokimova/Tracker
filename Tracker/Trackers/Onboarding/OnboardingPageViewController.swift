@@ -8,34 +8,40 @@
 import UIKit
 
 final class OnboardingPageViewController: UIPageViewController {
+    // MARK: Private Properties
     private let onboardingImage1 = "Onboarding1"
     private let onboardingImage2 = "Onboarding2"
     private let onboardingText1 = "Отслеживайте только\nто, что хотите"
     private let onboardingText2 = "Даже если это\nне литры воды и йога"
     private let userDefaultsKey = "isOnboardingShown"
+    
+    // MARK: - UI-Elements
     private lazy var pages: [UIViewController] = []
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
-        pageControl.currentPageIndicatorTintColor = .ypBlack
-        pageControl.pageIndicatorTintColor = .ypBlack.withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = .ypBlackAny
+        pageControl.pageIndicatorTintColor = .ypBlackAny.withAlphaComponent(0.3)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
-    
+    /* Визуально зафиксированная кнопка смотрится лучше.
+     Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController
+     Альтернативный вариант реализации добавлен в отдельную ветку "sprint_16_onboarding_2" */
     private lazy var onboardingButton: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypWhiteAny, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlack
+        button.backgroundColor = .ypBlackAny
         button.addTarget(self, action: #selector(didTapOnboardingButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
+    // MARK: - Initializers
     init() {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
@@ -43,6 +49,7 @@ final class OnboardingPageViewController: UIPageViewController {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
@@ -51,11 +58,11 @@ final class OnboardingPageViewController: UIPageViewController {
         setupOnboardingPageView()
         setupOnboardingPageViewConstrains()
     }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .darkContent
     }
-    
+    // MARK: - Setup View
     private func setupOnboardingPageView() {
         view.addSubview(pageControl)
         view.addSubview(onboardingButton)
@@ -92,7 +99,7 @@ final class OnboardingPageViewController: UIPageViewController {
                                completion: nil)
         }
     }
-    
+    // MARK: - Actions
     @objc
     private func didTapOnboardingButton() {
         let tabBarController = TabBarController()
@@ -107,7 +114,7 @@ final class OnboardingPageViewController: UIPageViewController {
         }
     }
 }
-
+// MARK: - UIPageViewControllerDataSource
 extension OnboardingPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController
@@ -136,6 +143,7 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
     }
 }
 
+// MARK: - UIPageViewControllerDelegate
 extension OnboardingPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
@@ -148,4 +156,3 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
         }
     }
 }
-

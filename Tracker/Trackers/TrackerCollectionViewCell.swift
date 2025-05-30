@@ -21,7 +21,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var isCompletedToday: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
-//    private let analyticsService = AnalyticsService()
+    // MARK: - UI-Elements
+    // Card/Tracker
     private let trackerCard: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
@@ -31,12 +32,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private let emojiLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let emojiypbackgroundView: UIView = {
+    private let emojiBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .ypWhite.withAlphaComponent(0.3)
         view.layer.cornerRadius = 12
@@ -52,7 +53,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let trackerDescriptionLabel: UILabel = {
+    private let trackerDescritionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypWhite
@@ -61,7 +62,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let quantityManagementView: UIView = {
+    // Quantity management
+    private let quantitiManagmentView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -105,12 +107,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) wasn't implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-    
+    // MARK: - Actions
     @objc
     private func plusTrackerButtonTapped() {
-//        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId")
             return }
@@ -120,7 +121,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             delegate?.completeTracker(id: trackerId, at: indexPath)
         }
     }
-    
+    // MARK: - Public Methods
     func updateTrackerDetail(
         tracker: Tracker,
         isCompletedToday: Bool,
@@ -131,32 +132,30 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
         trackerCard.backgroundColor = tracker.color
-        trackerDescriptionLabel.text = tracker.title
+        trackerDescritionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
         self.pinTrackerImage.isHidden = tracker.pinned ? false : true
         numberOfDaysLabel.text = String.localizedStringWithFormat(NSLocalizedString("daysCount", comment: ""), completedDays)
         plusButtonSettings()
     }
-    
+    // MARK: - Private Methods
     private func plusButtonSettings() {
         plusTrackerButton.backgroundColor = trackerCard.backgroundColor
-        
         let plusTrackerButtonOpacity: Float = isCompletedToday ? 0.3 : 1
         plusTrackerButton.layer.opacity = plusTrackerButtonOpacity
-        
         let image = isCompletedToday ? doneButtonImage : plusButtonImage
         plusTrackerButton.setImage(image, for: .normal)
     }
-    
+    // MARK: - Setup View
     private func setupTrackerCollectionView() {
         contentView.addSubview(trackerCard)
-        contentView.addSubview(quantityManagementView)
-        trackerCard.addSubview(emojiypbackgroundView)
+        contentView.addSubview(quantitiManagmentView)
+        trackerCard.addSubview(emojiBackgroundView)
         trackerCard.addSubview(emojiLabel)
         trackerCard.addSubview(pinTrackerImage)
-        trackerCard.addSubview(trackerDescriptionLabel)
-        quantityManagementView.addSubview(numberOfDaysLabel)
-        quantityManagementView.addSubview(plusTrackerButton)
+        trackerCard.addSubview(trackerDescritionLabel)
+        quantitiManagmentView.addSubview(numberOfDaysLabel)
+        quantitiManagmentView.addSubview(plusTrackerButton)
     }
     
     private func setupTrackerCollectionViewConstrains() {
@@ -164,40 +163,37 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             trackerCard.topAnchor.constraint(equalTo: contentView.topAnchor),
             trackerCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trackerCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            trackerCard.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7),
+            trackerCard.heightAnchor.constraint(equalToConstant: 90),
             
-            quantityManagementView.topAnchor.constraint(equalTo: trackerCard.bottomAnchor),
-            quantityManagementView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            quantityManagementView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            quantityManagementView.heightAnchor.constraint(equalToConstant: 58),
+            quantitiManagmentView.topAnchor.constraint(equalTo: trackerCard.bottomAnchor),
+            quantitiManagmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            quantitiManagmentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            quantitiManagmentView.heightAnchor.constraint(equalToConstant: 58),
             
-            emojiypbackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
-            emojiypbackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
-            emojiypbackgroundView.trailingAnchor.constraint(lessThanOrEqualTo: trackerCard.trailingAnchor, constant: -12),
-            emojiypbackgroundView.heightAnchor.constraint(equalToConstant: 24),
-            emojiypbackgroundView.widthAnchor.constraint(equalToConstant: 24),
+            emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
             
-            emojiLabel.centerXAnchor.constraint(equalTo: emojiypbackgroundView.centerXAnchor),
-            emojiLabel.centerYAnchor.constraint(equalTo: emojiypbackgroundView.centerYAnchor),
+            emojiBackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
+            emojiBackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
+            emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24),
+            emojiBackgroundView.widthAnchor.constraint(equalToConstant: 24),
             
             pinTrackerImage.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -4),
-            pinTrackerImage.centerYAnchor.constraint(equalTo: emojiypbackgroundView.centerYAnchor),
+            pinTrackerImage.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
             pinTrackerImage.heightAnchor.constraint(equalToConstant: 24),
             pinTrackerImage.widthAnchor.constraint(equalToConstant: 24),
             
-            trackerDescriptionLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
-            trackerDescriptionLabel.bottomAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: -12),
-            trackerDescriptionLabel.trailingAnchor.constraint(lessThanOrEqualTo: trackerCard.trailingAnchor, constant: -12),
+            trackerDescritionLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
+            trackerDescritionLabel.bottomAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: -12),
+            trackerDescritionLabel.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
             
-            plusTrackerButton.topAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: 8),
-            plusTrackerButton.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
-            plusTrackerButton.heightAnchor.constraint(equalToConstant: 34),
-            plusTrackerButton.widthAnchor.constraint(equalToConstant: 34),
-            
-            numberOfDaysLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
+            numberOfDaysLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             numberOfDaysLabel.centerYAnchor.constraint(equalTo: plusTrackerButton.centerYAnchor),
-            numberOfDaysLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40)
             
+            plusTrackerButton.topAnchor.constraint(equalTo: quantitiManagmentView.topAnchor, constant: 8),
+            plusTrackerButton.trailingAnchor.constraint(equalTo: quantitiManagmentView.trailingAnchor, constant: -12),
+            plusTrackerButton.heightAnchor.constraint(equalToConstant: 34),
+            plusTrackerButton.widthAnchor.constraint(equalToConstant: 34)
         ])
     }
 }

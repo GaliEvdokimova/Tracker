@@ -14,7 +14,8 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 final class ScheduleViewController: UIViewController {
     weak var delegate: ScheduleViewControllerDelegate?
     private var selectedDays: [Int] = []
-    private var titleLabel: UILabel = {
+    // MARK: - UI-Elements
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Расписание"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -51,6 +52,7 @@ final class ScheduleViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,7 +60,7 @@ final class ScheduleViewController: UIViewController {
         setupScheduleView()
         setupScheduleViewConstrains()
     }
-    
+    // MARK: - Actions
     @objc
     private func doneButtonTapped() {
         for (index, list) in scheduleTableView.visibleCells.enumerated() {
@@ -70,7 +72,7 @@ final class ScheduleViewController: UIViewController {
         self.delegate?.saveSelectedDays(list: selectedDays)
         dismiss(animated: true)
     }
-    
+    // MARK: - Setup View
     private func setupTableView() {
         scheduleTableView.delegate = self
         scheduleTableView.dataSource = self
@@ -104,7 +106,7 @@ final class ScheduleViewController: UIViewController {
         ])
     }
 }
-
+// MARK: - UITableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -127,7 +129,7 @@ extension ScheduleViewController: UITableViewDelegate {
         scheduleTableView.deselectRow(at: indexPath, animated: true)
     }
 }
-
+// MARK: - UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
@@ -141,9 +143,9 @@ extension ScheduleViewController: UITableViewDataSource {
             withIdentifier: ScheduleCell.cellIdentifier,
             for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         
-        let days = DayOfWeek.allCases[indexPath.row]
+        let days = WeekDay.allCases[indexPath.row]
         
-        cell.textLabel?.text = "\(days.nameOfDays)"
+        cell.textLabel?.text = "\(days.daysName)"
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.textColor = .ypBlack
         cell.layer.masksToBounds = true

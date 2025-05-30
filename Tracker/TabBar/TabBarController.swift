@@ -12,18 +12,26 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         let trackersViewController = UINavigationController(rootViewController: TrackersViewController())
-        trackersViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named: "Trackers"), selectedImage: nil)
+        trackersViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("app.title", comment: ""),
+            image: UIImage(named: "Trackers"),
+            selectedImage: nil
+        )
         
-        let statisticsViewController = StatisticsViewController()
-        statisticsViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "bunny"), selectedImage: nil)
-        self.viewControllers = [trackersViewController, statisticsViewController]
+        let staticticsViewController = StaticticsViewController()
+        staticticsViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("statistic.title", comment: ""),
+            image: UIImage(named: "Bunny"),
+            selectedImage: nil
+        )
+        self.viewControllers = [trackersViewController, staticticsViewController]
         
         if #available(iOS 13.0, *) {
             let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
-            tabBarAppearance.configureWithDefaultypbackground()
-            tabBarAppearance.ypbackgroundColor = UIColor.ypWhite
+            tabBarAppearance.configureWithDefaultBackground()
+            tabBarAppearance.backgroundColor = UIColor.ypWhite
             UITabBar.appearance().standardAppearance = tabBarAppearance
-            
+
             if #available(iOS 15.0, *) {
                 UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
             }

@@ -12,6 +12,6 @@ struct Tracker {
     let title: String
     let color: UIColor
     let emoji: String
-    let schedule: [DayOfWeek]
+    let schedule: [WeekDay]
     let pinned: Bool
 }

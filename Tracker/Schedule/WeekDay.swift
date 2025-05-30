@@ -1,5 +1,5 @@
 //
-//  Weekday.swift
+//  WeekDay.swift
 //  Tracker
 //
 //  Created by Galina evdokimova on 25.03.2025.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum DayOfWeek: Int, CaseIterable, Codable {
+enum WeekDay: Int, CaseIterable, Codable {
     case monday = 2
     case tuesday = 3
     case wednesday = 4
@@ -16,7 +16,7 @@ enum DayOfWeek: Int, CaseIterable, Codable {
     case saturday = 7
     case sunday = 1
     
-    var nameOfDays: String {
+    var daysName: String {
         switch self {
         case .monday:
             "Понедельник"

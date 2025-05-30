@@ -9,6 +9,7 @@ import UIKit
 
 final class AddTrackerViewController: UIViewController {
     weak var trackersViewController: TrackersViewController?
+    // MARK: - UI-Elements
     private lazy var titleAddTrackersLabel: UILabel = {
         let label = UILabel()
         label.text = "Создание трекера"
@@ -22,7 +23,7 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
@@ -41,14 +42,14 @@ final class AddTrackerViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupAddTrackersView()
         setupAddTrackersViewConstrains()
     }
-    
+    // MARK: - Actions
     @objc
     private func didTapHabitButton() {
         let createTracker = CreateTrackerViewController(editTracker: false)
@@ -64,7 +65,7 @@ final class AddTrackerViewController: UIViewController {
         createTracker.delegate = self.trackersViewController
         present(createTracker, animated: true, completion: nil)
     }
-    
+    // MARK: - Setup View
     private func setupAddTrackersView() {
         view.backgroundColor = .ypWhite
         habitButton.backgroundColor = .ypBlack
