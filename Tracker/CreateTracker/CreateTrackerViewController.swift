@@ -35,12 +35,12 @@ final class CreateTrackerViewController: UIViewController {
         "🥦","🏓","🥇","🎸","🏝","😪"
     ]
     private let colors: [UIColor] = [
-        .ypypypcolorSelection1, .ypcolorSelection2, .ypcolorSelection3,
+        .ypcolorSelection1, .ypcolorSelection2, .ypcolorSelection3,
         .ypcolorSelection4, .ypcolorSelection5, .ypcolorSelection6,
         .ypcolorSelection7, .ypcolorSelection8, .ypcolorSelection9,
-        .ypypypypcolorSelection10, .ypypypypcolorSelection11, .ypypypypcolorSelection12,
-        .ypypypypcolorSelection13, .ypypypypcolorSelection14, .ypypypypcolorSelection15,
-        .ypypypypcolorSelection16, .ypypypypcolorSelection17, .ypypypypcolorSelection18
+        .ypcolorSelection10, .ypcolorSelection11, .ypcolorSelection12,
+        .ypcolorSelection13, .ypcolorSelection14, .ypcolorSelection15,
+        .ypcolorSelection16, .ypcolorSelection17, .ypcolorSelection18
     ]
     
     private lazy var titleLabel: UILabel = {
@@ -67,7 +67,7 @@ final class CreateTrackerViewController: UIViewController {
         textField.placeholder = "Введите название трекера"
         textField.textColor = .ypBlack
         textField.layer.cornerRadius = 16
-        textField.ypbackgroundColor = .ypypbackground
+        textField.ypbackgroundColor = .yppbackground
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -90,7 +90,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerTableView: UITableView = {
         let tableView = UITableView()
-        tableView.ypbackgroundColor = .ypypbackground
+        tableView.ypbackgroundColor = .ypbackground
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false

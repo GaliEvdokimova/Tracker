@@ -103,7 +103,7 @@ final class TrackerCategoryStore: NSObject {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(
             format: "title == %@",
-            title as CVarArg)
+            title as! any CVarArg)
         let result = try context.fetch(fetchRequest)
         return result.first
     }

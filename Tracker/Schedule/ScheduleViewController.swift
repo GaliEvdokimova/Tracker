@@ -19,14 +19,14 @@ final class ScheduleViewController: UIViewController {
         label.text = "Расписание"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .ypBlack
-        label.ypbackgroundColor = .ypWhite
+        label.backgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var scheduleTableView: UITableView = {
         let tableView = UITableView()
-        tableView.ypbackgroundColor = .ypypbackground
+        tableView.backgroundColor = .ypBackground
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
@@ -43,7 +43,7 @@ final class ScheduleViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.ypbackgroundColor = .ypBlack
+        button.backgroundColor = .ypBlack
         button.addTarget(self,
                          action: #selector(doneButtonTapped),
                          for: .touchUpInside)
@@ -80,7 +80,7 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func setupScheduleView() {
-        view.ypbackgroundColor = .ypWhite
+        view.backgroundColor = .ypWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scheduleTableView)
