@@ -65,7 +65,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let quantitiManagmentView: UIView = {
+    private let quantityManagementView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -154,13 +154,13 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private func setupTrackerCollectionView() {
         contentView.addSubview(trackerCard)
-        contentView.addSubview(quantitiManagmentView)
+        contentView.addSubview(quantityManagementView)
         trackerCard.addSubview(emojiBackgroundView)
         trackerCard.addSubview(emojiLabel)
         trackerCard.addSubview(pinTrackerButton)
         trackerCard.addSubview(trackerDescriptionLabel)
-        quantitiManagmentView.addSubview(numberOfDaysLabel)
-        quantitiManagmentView.addSubview(plusTrackerButton)
+        quantityManagementView.addSubview(numberOfDaysLabel)
+        quantityManagementView.addSubview(plusTrackerButton)
     }
     
     private func setupTrackerCollectionViewConstrains() {
@@ -170,10 +170,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             trackerCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             trackerCard.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7),
             
-            quantitiManagmentView.topAnchor.constraint(equalTo: trackerCard.bottomAnchor),
-            quantitiManagmentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            quantitiManagmentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            quantitiManagmentView.heightAnchor.constraint(equalToConstant: 58),
+            quantityManagementView.topAnchor.constraint(equalTo: trackerCard.bottomAnchor),
+            quantityManagementView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            quantityManagementView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            quantityManagementView.heightAnchor.constraint(equalToConstant: 58),
             
             emojiBackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
             emojiBackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
