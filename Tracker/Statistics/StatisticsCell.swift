@@ -34,9 +34,9 @@ final class StatisticsCell: UITableViewCell {
     
     private lazy var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.colorSelection1.cgColor,
-                                UIColor.colorSelection9.cgColor,
-                                UIColor.colorSelection3.cgColor]
+        gradientLayer.colors = [UIColor.ypcolorSelection1.cgColor,
+                                UIColor.ypcolorSelection9.cgColor,
+                                UIColor.ypcolorSelection3.cgColor]
         gradientLayer.cornerRadius = 16
         gradientLayer.locations = [0, 0.5, 1]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)

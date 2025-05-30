@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
+        // This occurs shortly after the scene enters the ypbackground, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
@@ -41,11 +41,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+        // Called as the scene transitions from the ypbackground to the foreground.
+        // Use this method to undo the changes made on entering the ypbackground.
     }
     
-    func sceneDidEnterBackground(_ scene: UIScene) {
+    func sceneDidEnterypbackground(_ scene: UIScene) {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 }

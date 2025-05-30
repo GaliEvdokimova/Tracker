@@ -12,7 +12,7 @@ final class FilterCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .ypBackground
+        backgroundColor = .ypbackground
     }
     
     required init?(coder: NSCoder) {

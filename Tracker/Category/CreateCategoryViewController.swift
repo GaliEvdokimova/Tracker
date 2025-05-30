@@ -14,7 +14,15 @@ protocol CreateCategoryViewControllerDelegate: AnyObject {
 final class CreateCategoryViewController: UIViewController {
     weak var delegate: CreateCategoryViewControllerDelegate?
     var existingCategory: TrackerCategory?
-    private var categoryViewModel = CategoryViewModel()
+    private(set) var categoryViewModel: CategoryViewModel
+    init(categoryViewModel: CategoryViewModel) {
+        self.categoryViewModel = categoryViewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private let errorReporting = ErrorReporting()
     var isEditCategory = Bool()
     
@@ -23,7 +31,7 @@ final class CreateCategoryViewController: UIViewController {
         label.text = "Новая категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.ypbackgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,7 +41,7 @@ final class CreateCategoryViewController: UIViewController {
         textField.placeholder = "Введите название категории"
         textField.textColor = .ypBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackground
+        textField.ypbackgroundColor = .ypypbackground
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -51,7 +59,7 @@ final class CreateCategoryViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlack
+        button.ypbackgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapCreateCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -94,15 +102,15 @@ final class CreateCategoryViewController: UIViewController {
     private func updateCreateCategoryButton() {
         if createCategoryName.text?.isEmpty == true {
             createCategoryButton.isEnabled = false
-            createCategoryButton.backgroundColor = .ypGray
+            createCategoryButton.ypbackgroundColor = .ypGray
         } else {
             createCategoryButton.isEnabled = true
-            createCategoryButton.backgroundColor = .ypBlack
+            createCategoryButton.ypbackgroundColor = .ypBlack
         }
     }
     
     private func setupCreateCategoryView() {
-        view.backgroundColor = .ypWhite
+        view.ypbackgroundColor = .ypWhite
         createCategoryName.delegate = self
         createCategoryName.addTarget(self,
                                      action: #selector(updateCreateCategoryButton),

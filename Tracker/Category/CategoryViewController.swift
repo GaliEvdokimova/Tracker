@@ -16,7 +16,7 @@ final class CategoryViewController: UIViewController {
         label.text = "Категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.ypbackgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,7 +42,7 @@ final class CategoryViewController: UIViewController {
     
     private lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypWhite
+        tableView.ypbackgroundColor = .ypWhite
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = true
@@ -59,7 +59,7 @@ final class CategoryViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlack
+        button.ypbackgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -89,7 +89,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupCategoryView() {
-        view.backgroundColor = .ypWhite
+        view.ypbackgroundColor = .ypWhite
         view.addSubview(titleLabel)
         view.addSubview(stubImage)
         view.addSubview(stubLabel)

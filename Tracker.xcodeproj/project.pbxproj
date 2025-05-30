@@ -27,16 +27,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		20028EA72DE874F2002E86D7 /* AnalyticsService */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AnalyticsService;
-			sourceTree = "<group>";
-		};
-		2030DCFE2DE821C0007E0B41 /* TrackerTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = TrackerTests;
-			sourceTree = "<group>";
-		};
 		20A789042D8F190900BE4886 /* Tracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -64,8 +54,6 @@
 		20A788F92D8F190900BE4886 = {
 			isa = PBXGroup;
 			children = (
-				20028EA72DE874F2002E86D7 /* AnalyticsService */,
-				2030DCFE2DE821C0007E0B41 /* TrackerTests */,
 				20A789042D8F190900BE4886 /* Tracker */,
 				20A789032D8F190900BE4886 /* Products */,
 			);
@@ -95,8 +83,6 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				20028EA72DE874F2002E86D7 /* AnalyticsService */,
-				2030DCFE2DE821C0007E0B41 /* TrackerTests */,
 				20A789042D8F190900BE4886 /* Tracker */,
 			);
 			name = Tracker;

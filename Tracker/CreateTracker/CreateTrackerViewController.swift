@@ -35,12 +35,12 @@ final class CreateTrackerViewController: UIViewController {
         "🥦","🏓","🥇","🎸","🏝","😪"
     ]
     private let colors: [UIColor] = [
-        .colorSelection1, .colorSelection2, .colorSelection3,
-        .colorSelection4, .colorSelection5, .colorSelection6,
-        .colorSelection7, .colorSelection8, .colorSelection9,
-        .colorSelection10, .colorSelection11, .colorSelection12,
-        .colorSelection13, .colorSelection14, .colorSelection15,
-        .colorSelection16, .colorSelection17, .colorSelection18
+        .ypypypcolorSelection1, .ypcolorSelection2, .ypcolorSelection3,
+        .ypcolorSelection4, .ypcolorSelection5, .ypcolorSelection6,
+        .ypcolorSelection7, .ypcolorSelection8, .ypcolorSelection9,
+        .ypypypypcolorSelection10, .ypypypypcolorSelection11, .ypypypypcolorSelection12,
+        .ypypypypcolorSelection13, .ypypypypcolorSelection14, .ypypypypcolorSelection15,
+        .ypypypypcolorSelection16, .ypypypypcolorSelection17, .ypypypypcolorSelection18
     ]
     
     private lazy var titleLabel: UILabel = {
@@ -48,7 +48,7 @@ final class CreateTrackerViewController: UIViewController {
         label.text = "Новая привычка"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.ypbackgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -67,7 +67,7 @@ final class CreateTrackerViewController: UIViewController {
         textField.placeholder = "Введите название трекера"
         textField.textColor = .ypBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackground
+        textField.ypbackgroundColor = .ypypbackground
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -90,7 +90,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypBackground
+        tableView.ypbackgroundColor = .ypypbackground
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
@@ -102,7 +102,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = .ypWhite
+        scrollView.ypbackgroundColor = .ypWhite
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isScrollEnabled = true
@@ -112,7 +112,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .ypWhite
+        collectionView.ypbackgroundColor = .ypWhite
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
         return collectionView
@@ -126,7 +126,7 @@ final class CreateTrackerViewController: UIViewController {
         button.layer.borderColor = UIColor.ypRed.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 16
-        button.backgroundColor = .clear
+        button.ypbackgroundColor = .clear
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -138,7 +138,7 @@ final class CreateTrackerViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypGray
+        button.ypbackgroundColor = .ypGray
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -148,7 +148,7 @@ final class CreateTrackerViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 8
-        stackView.backgroundColor = .clear
+        stackView.ypbackgroundColor = .clear
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -166,7 +166,7 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTapGestureRecognizer()
-        view.backgroundColor = .ypWhiteDay
+        view.ypbackgroundColor = .ypWhiteDay
         
         setupCreateTrackerNameTextField()
         setupTableView()
@@ -206,7 +206,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func setupCreateTrackerView() {
-        view.backgroundColor = .ypWhite
+        view.ypbackgroundColor = .ypWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scrollView)
@@ -309,10 +309,10 @@ private func updateCreateButton() {
         isColorSelected != nil
     {
         createButton.isEnabled = true
-        createButton.backgroundColor = .ypBlack
+        createButton.ypbackgroundColor = .ypBlack
     } else {
         createButton.isEnabled = false
-        createButton.backgroundColor = .ypGray
+        createButton.ypbackgroundColor = .ypGray
     }
 }
 
@@ -375,7 +375,6 @@ private func createButtonTapped() {
     }
     delegate?.reloadCollectionView()
     self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-}
 }
 
 extension CreateTrackerViewController: UITextFieldDelegate {
@@ -465,7 +464,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         cell.layer.masksToBounds = true
         
         cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = .clear
+        cell.ypbackgroundColor = .clear
         
         if indexPath.row == (irregularEvent ? 0 : 1) {
             cell.separatorInset = UIEdgeInsets(top: 0,
@@ -513,7 +512,7 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ColorsCollectionViewCell.identifier,
                 for: indexPath) as? ColorsCollectionViewCell else { return UICollectionViewCell() }
-            cell.colorView.backgroundColor = colors[indexPath.row]
+            cell.colorView.ypbackgroundColor = colors[indexPath.row]
             return cell
         }
         return UICollectionViewCell()
@@ -526,11 +525,11 @@ extension CreateTrackerViewController: UICollectionViewDelegate {
         if indexPath.section == 0 {
             if let selectedEmoji = isEmojiSelected {
                 let cell = collectionView.cellForItem(at: selectedEmoji)
-                cell?.backgroundColor = .clear
+                cell?.ypbackgroundColor = .clear
             }
             let cell = collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell
             cell?.layer.cornerRadius = 16
-            cell?.backgroundColor = .ypLightGray
+            cell?.ypbackgroundColor = .ypLightGray
             isEmojiSelected = indexPath
         } else if indexPath.section == 1 {
             if let selectedColor = isColorSelected {
@@ -541,7 +540,7 @@ extension CreateTrackerViewController: UICollectionViewDelegate {
             let cell = collectionView.cellForItem(at: indexPath) as? ColorsCollectionViewCell
             cell?.layer.cornerRadius = 11
             cell?.layer.borderWidth = 3
-            cell?.layer.borderColor = cell?.colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
+            cell?.layer.borderColor = cell?.colorView.ypbackgroundColor?.withAlphaComponent(0.3).cgColor
             isColorSelected = indexPath
         }
         updateCreateButton()

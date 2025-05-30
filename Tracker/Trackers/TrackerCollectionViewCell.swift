@@ -21,7 +21,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var isCompletedToday: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
-    private let analyticsService = AnalyticsService()
+//    private let analyticsService = AnalyticsService()
     private let trackerCard: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
@@ -36,7 +36,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let emojiBackgroundView: UIView = {
+    private let emojiypbackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .ypWhite.withAlphaComponent(0.3)
         view.layer.cornerRadius = 12
@@ -44,16 +44,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var pinTrackerButton: UIButton = {
-        guard let image = UIImage(named: "Pin") else { return UIButton() }
-        
-        let button = UIButton.systemButton(
-            with: image,
-            target: self,
-            action: #selector(pinTrackerButtonTapped))
-        button.tintColor = .ypWhite
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var pinTrackerImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Pin")
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     private let trackerDescriptionLabel: UILabel = {
@@ -114,7 +110,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     @objc
     private func plusTrackerButtonTapped() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
+//        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId")
             return }
@@ -137,7 +133,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         trackerCard.backgroundColor = tracker.color
         trackerDescriptionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        self.pinTrackerButton.isHidden = tracker.pinned ? false : true
+        self.pinTrackerImage.isHidden = tracker.pinned ? false : true
         numberOfDaysLabel.text = String.localizedStringWithFormat(NSLocalizedString("daysCount", comment: ""), completedDays)
         plusButtonSettings()
     }
@@ -155,9 +151,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private func setupTrackerCollectionView() {
         contentView.addSubview(trackerCard)
         contentView.addSubview(quantityManagementView)
-        trackerCard.addSubview(emojiBackgroundView)
+        trackerCard.addSubview(emojiypbackgroundView)
         trackerCard.addSubview(emojiLabel)
-        trackerCard.addSubview(pinTrackerButton)
+        trackerCard.addSubview(pinTrackerImage)
         trackerCard.addSubview(trackerDescriptionLabel)
         quantityManagementView.addSubview(numberOfDaysLabel)
         quantityManagementView.addSubview(plusTrackerButton)
@@ -175,19 +171,19 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             quantityManagementView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             quantityManagementView.heightAnchor.constraint(equalToConstant: 58),
             
-            emojiBackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
-            emojiBackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
-            emojiBackgroundView.trailingAnchor.constraint(lessThanOrEqualTo: trackerCard.trailingAnchor, constant: -12),
-            emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24),
-            emojiBackgroundView.widthAnchor.constraint(equalToConstant: 24),
+            emojiypbackgroundView.topAnchor.constraint(equalTo: trackerCard.topAnchor, constant: 12),
+            emojiypbackgroundView.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
+            emojiypbackgroundView.trailingAnchor.constraint(lessThanOrEqualTo: trackerCard.trailingAnchor, constant: -12),
+            emojiypbackgroundView.heightAnchor.constraint(equalToConstant: 24),
+            emojiypbackgroundView.widthAnchor.constraint(equalToConstant: 24),
             
-            emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
-            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
+            emojiLabel.centerXAnchor.constraint(equalTo: emojiypbackgroundView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiypbackgroundView.centerYAnchor),
             
-            pinTrackerButton.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -4),
-            pinTrackerButton.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
-            pinTrackerButton.heightAnchor.constraint(equalToConstant: 24),
-            pinTrackerButton.widthAnchor.constraint(equalToConstant: 24),
+            pinTrackerImage.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -4),
+            pinTrackerImage.centerYAnchor.constraint(equalTo: emojiypbackgroundView.centerYAnchor),
+            pinTrackerImage.heightAnchor.constraint(equalToConstant: 24),
+            pinTrackerImage.widthAnchor.constraint(equalToConstant: 24),
             
             trackerDescriptionLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
             trackerDescriptionLabel.bottomAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: -12),

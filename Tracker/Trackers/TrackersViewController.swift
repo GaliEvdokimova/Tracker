@@ -7,7 +7,8 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController {
+final class TrackersViewController: UIViewController, FilterViewControllerDelegate {
+    
     private var trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private var trackerRecordStore = TrackerRecordStore()
@@ -23,7 +24,7 @@ final class TrackersViewController: UIViewController {
     private var selectedDay: Int?
     private var filterText: String?
     private var currentFilterMode: Filters = .allTrackers
-    private let analyticsService = AnalyticsService()
+    //   private let analyticsService = AnalyticsService()
     
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
@@ -50,7 +51,7 @@ final class TrackersViewController: UIViewController {
     
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .clear
+        collectionView.ypbackgroundColor = .clear
         collectionView.allowsMultipleSelection = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -91,25 +92,12 @@ final class TrackersViewController: UIViewController {
         return label
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addTapGestureRecognizer()
-        coreDataSetup()
-        reloadVisibleCategories()
-        showInitialStub()
-        setupNavBar()
-        setupTrackersView()
-        setupCollectionView()
-        setupTrackersViewConstrains()
-        dateFiltering()
-    }
-    
     private lazy var filterButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("filter.title", comment: ""),
                         for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .ypBlue
+        button.ypbackgroundColor = .ypBlue
         button.layer.cornerRadius = 16
         button.addTarget(self,
                          action: #selector(filterButtonTapped),
@@ -120,7 +108,7 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addTapGestureToHideKeyboard()
+        addTapGestureRecognizer()
         dateFiltering()
         coreDataSetup()
         reloadVisibleCategories(filterCompletedTrackers: nil)
@@ -138,12 +126,12 @@ final class TrackersViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        analyticsService.report(event: "open", params: ["screen": "Main"])
+        //        analyticsService.report(event: "open", params: ["screen": "Main"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        analyticsService.report(event: "close", params: ["screen": "Main"])
+        //        analyticsService.report(event: "close", params: ["screen": "Main"])
     }
     
     private func coreDataSetup() {
@@ -168,7 +156,7 @@ final class TrackersViewController: UIViewController {
     }
     
     private func setupTrackersView() {
-        view.backgroundColor = .ypWhite
+        view.ypbackgroundColor = .ypWhite
         
         view.addSubview(initialImage)
         view.addSubview(initialLabel)
@@ -222,7 +210,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func didTapAddTrackerButton() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
+        //        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
         let addTrackerViewController = AddTrackerViewController()
         addTrackerViewController.trackersViewController = self
         present(addTrackerViewController, animated: true, completion: nil)
@@ -239,7 +227,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func filterButtonTapped() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
+        //        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
         let filterViewController = FilterViewController()
         filterViewController.delegate = self
         present(filterViewController, animated: true, completion: nil)
@@ -515,7 +503,7 @@ final class TrackersViewController: UIViewController {
                 withReuseIdentifier: TrackerCollectionViewCell.identifier,
                 for: indexPath
             ) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
-            cell.contentView.backgroundColor = .clear
+            cell.contentView.ypbackgroundColor = .clear
             cell.prepareForReuse()
             let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
             cell.delegate = self
@@ -594,7 +582,7 @@ final class TrackersViewController: UIViewController {
                             $0.trackerId == tracker.id
                         }.count
                     )
-                    self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
+                    //                    self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
                     self.collectionView.reloadData()
                     self.present(createTrackerViewController, animated: true)
                 })
@@ -618,7 +606,7 @@ final class TrackersViewController: UIViewController {
                                     message: "Ошибка удаления трекера",
                                     controller: self)
                             }
-                            self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
+                            //                            self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
                             self.reloadVisibleCategories(filterCompletedTrackers: nil)
                             self.showInitialStub()
                             self.showSearchStub()
@@ -714,4 +702,4 @@ final class TrackersViewController: UIViewController {
             return 0
         }
     }
-    
+}
