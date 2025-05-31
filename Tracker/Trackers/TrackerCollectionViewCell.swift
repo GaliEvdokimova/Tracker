@@ -21,6 +21,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var isCompletedToday: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
+    private let analyticsService = AnalyticsService()
     // MARK: - UI-Elements
     // Card/Tracker
     private let trackerCard: UIView = {
@@ -112,6 +113,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // MARK: - Actions
     @objc
     private func plusTrackerButtonTapped() {
+        analyticsService.report(event: .click, screen: .main, item: .track)
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId")
             return }

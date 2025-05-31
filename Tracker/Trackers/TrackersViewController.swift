@@ -24,6 +24,7 @@ final class TrackersViewController: UIViewController {
     private var selectedDay: Int?
     private var filterText: String?
     private var currentFilterMode: Filters = .allTrackers
+    private let analyticsService = AnalyticsService()
     // MARK: - UI-Elements
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
@@ -124,6 +125,7 @@ final class TrackersViewController: UIViewController {
         setupCollectionView()
         setupTrackersViewConstrains()
         filterButtonVisibility()
+        analyticsService.report(event: Event.open, screen: Screen.main)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,6 +134,7 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, screen: .main)
     }
     // MARK: - CoreDataSetup
     private func coreDataSetup() {
@@ -218,6 +221,7 @@ final class TrackersViewController: UIViewController {
         let addTrackerViewController = AddTrackerViewController()
         addTrackerViewController.trackersViewController = self
         present(addTrackerViewController, animated: true, completion: nil)
+        analyticsService.report(event: .click, screen: .main, item: .add_track)
     }
     
     @objc

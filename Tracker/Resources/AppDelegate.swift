@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         DaysValueTransformer.register()
-        let configuration = AppMetricaConfiguration(apiKey: "API key")
-            AppMetrica.activate(with: configuration!)
         return true
     }
 
