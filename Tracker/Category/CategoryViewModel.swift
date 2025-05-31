@@ -23,7 +23,6 @@ final class CategoryViewModel {
         do {
             try self.trackerCategoryStore.addCategory(TrackerCategory(title: name, trackers: []))
         } catch {
-            // TODO: "Обработать ошибку"
             print("Error add category: \(error.localizedDescription)")
         }
     }
@@ -41,7 +40,6 @@ final class CategoryViewModel {
         do {
             try self.trackerCategoryStore.deleteCategory(category)
         } catch {
-            // TODO: "Обработать ошибку"
             print("Error delete category: \(error.localizedDescription)")
         }
     }
@@ -50,7 +48,6 @@ final class CategoryViewModel {
         do {
             try self.trackerCategoryStore.editCaregory(category: category, title: title)
         } catch {
-            // TODO: "Обработать ошибку"
             print("Error edit category: \(error.localizedDescription)")
         }
     }

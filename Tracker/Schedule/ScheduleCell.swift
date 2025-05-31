@@ -10,7 +10,7 @@ import UIKit
 final class ScheduleCell: UITableViewCell {
     static let cellIdentifier = "scheduleCell"
     var selectedSwitcher = false
-
+    
     private lazy var switcher: UISwitch = {
         let swith = UISwitch()
         swith.onTintColor = .ypBlue
@@ -20,7 +20,7 @@ final class ScheduleCell: UITableViewCell {
         swith.translatesAutoresizingMaskIntoConstraints = false
         return swith
     }()
-  
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         

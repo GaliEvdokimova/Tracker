@@ -8,6 +8,7 @@
 import UIKit
 
 final class CategoryViewController: UIViewController {
+    private let analyticsService = AnalyticsService()
     private(set) var categoryViewModel = CategoryViewModel()
     private let errorReporting = ErrorReporting()
     // MARK: - UI-Elements
@@ -183,6 +184,7 @@ extension CategoryViewController: UITableViewDelegate {
                                                        previewProvider: nil) { _ -> UIMenu? in
             let editAction = UIAction(title: "Редактировать") { [weak self] _ in
                 guard let self = self else { return }
+                self.analyticsService.report(event: .click, screen: .main, item: .edit)
                 let createCategoryViewController = CreateCategoryViewController()
                 createCategoryViewController.delegate = self
                 createCategoryViewController.editCategory(category)
@@ -192,6 +194,7 @@ extension CategoryViewController: UITableViewDelegate {
             
             let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                 guard let self = self else { return }
+                self.analyticsService.report(event: .click, screen: .main, item: .delete)
                 let alertController = UIAlertController(
                     title: nil,
                     message: "Эта категория точно не нужна?",

@@ -25,8 +25,8 @@ final class CreateTrackerViewController: UIViewController {
     private var selectedDays: [WeekDay] = []
     private let categoryViewController = CategoryViewController()
     private let colorMarshalling = UIColorMarshalling()
-    private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
-    private var collectionViewHeightContraint: NSLayoutConstraint!
+    private var limitTrackerNameLabelHeightConstraint: NSLayoutConstraint!
+    private var collectionViewHeightConstraint: NSLayoutConstraint!
     private var isEmojiSelected: IndexPath? = nil
     private var isColorSelected: IndexPath? = nil
     private let emojies = [
@@ -202,7 +202,7 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerCollectionView.register(HeaderViewCell.self,
                                              forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                              withReuseIdentifier: HeaderViewCell.identifier)
-        collectionViewHeightContraint = createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 0)
+        collectionViewHeightConstraint = createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 0)
     }
     
     private func setupCreateTrackerView() {
@@ -225,11 +225,11 @@ final class CreateTrackerViewController: UIViewController {
     private func createTrackerCollectionViewHeight() {
         createTrackerCollectionView.collectionViewLayout.invalidateLayout()
         createTrackerCollectionView.layoutIfNeeded()
-        collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
+        collectionViewHeightConstraint.constant = createTrackerCollectionView.contentSize.height
     }
     
     private func setupCreateTrackerViewConstrains() {
-        limitTrackerNameLabelHeightContraint = limitTrackerNameLabel.heightAnchor.constraint(equalToConstant: 0)
+        limitTrackerNameLabelHeightConstraint = limitTrackerNameLabel.heightAnchor.constraint(equalToConstant: 0)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
@@ -243,7 +243,7 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             createTrackerName.heightAnchor.constraint(equalToConstant: 75),
             
-            limitTrackerNameLabelHeightContraint,
+            limitTrackerNameLabelHeightConstraint,
             limitTrackerNameLabel.centerXAnchor.constraint(equalTo: createTrackerName.centerXAnchor),
             limitTrackerNameLabel.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor),
             
@@ -252,11 +252,11 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 75 : 150),
             
-            collectionViewHeightContraint,
+            collectionViewHeightConstraint,
             createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 16),
-
+            
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -395,10 +395,10 @@ extension CreateTrackerViewController: UITextFieldDelegate {
         
         if newText.count >= maxLength {
             limitTrackerNameLabel.isHidden = false
-            limitTrackerNameLabelHeightContraint.constant = 38
+            limitTrackerNameLabelHeightConstraint.constant = 38
         } else {
             limitTrackerNameLabel.isHidden = true
-            limitTrackerNameLabelHeightContraint.constant = 0
+            limitTrackerNameLabelHeightConstraint.constant = 0
         }
         updateCreateButton()
         return newText.count <= maxLength
@@ -407,7 +407,7 @@ extension CreateTrackerViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         createTrackerName.text = .none
         limitTrackerNameLabel.isHidden = true
-        limitTrackerNameLabelHeightContraint.constant = 0
+        limitTrackerNameLabelHeightConstraint.constant = 0
         updateCreateButton()
         return true
     }
@@ -472,9 +472,9 @@ extension CreateTrackerViewController: UITableViewDataSource {
         
         if indexPath.row == (irregularEvent ? 0 : 1) {
             cell.separatorInset = UIEdgeInsets(top: 0,
-                                                    left: 0,
-                                                    bottom: 0,
-                                                    right: 500)
+                                               left: 0,
+                                               bottom: 0,
+                                               right: 500)
         }
         
         guard let detailTextLabel = cell.detailTextLabel else { return cell }

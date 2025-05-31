@@ -54,7 +54,7 @@ final class FilterViewController: UIViewController {
         filterTableView.delegate = self
         filterTableView.dataSource = self
         filterTableView.register(FilterCell.self,
-                                   forCellReuseIdentifier: FilterCell.cellIdentifier)
+                                 forCellReuseIdentifier: FilterCell.cellIdentifier)
     }
     
     private func setupFilterView() {

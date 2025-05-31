@@ -234,6 +234,7 @@ final class TrackersViewController: UIViewController {
     }
     @objc
     private func filterButtonTapped() {
+        analyticsService.report(event: .click, screen: .main, item: .filter)
         let filterViewController = FilterViewController()
         filterViewController.delegate = self
         present(filterViewController, animated: true, completion: nil)
@@ -289,13 +290,12 @@ final class TrackersViewController: UIViewController {
     }
     
     private func reloadVisibleCategories(filterCompletedTrackers: Bool?) {
-        // Фильтрацию закрепленной категории не предусматривал. Прошу не счиать критическим замечанием.
         pinnedCategory = TrackerCategory(title: pinnedCategoryName, trackers: pinnedTrackers)
         categories = trackerCategoryStore.trackerCategories
         visibleCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
                 let textCondition = tracker.title.contains(filterText ?? "") ||
-                (filterText ?? "").isEmpty // есть
+                (filterText ?? "").isEmpty
                 let dateCondition = tracker.schedule.contains { day in
                     guard let cerrentDate = self.selectedDay else {
                         return true
@@ -329,7 +329,7 @@ final class TrackersViewController: UIViewController {
         }
         filterButtonVisibility()
     }
-
+    
     private func isTrackerCompletedToday(id: UUID) -> Bool {
         completedTrackers.contains { trackerRecord in
             isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
@@ -385,7 +385,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let selectedDate = datePicker.date
         let currentCalendar = Calendar.current
         let trackerRecord = TrackerRecord(trackerId: id, date: selectedDate)
-    
+        
         guard currentCalendar.compare(selectedDate,
                                       to: currentDate,
                                       toGranularity: .day
@@ -481,7 +481,7 @@ extension TrackersViewController: FilterViewControllerDelegate {
         dateFiltering()
         filteringTrackers()
     }
-
+    
     func completedTrackersToday() {
         currentFilterMode = .completedTrackers
         reloadVisibleCategories(filterCompletedTrackers: true)
@@ -630,7 +630,7 @@ extension TrackersViewController: UICollectionViewDelegate {
         self.collectionView.reloadData()
         return configuration
     }
-
+    
     func collectionView(
         _ collectionView: UICollectionView,
         previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration

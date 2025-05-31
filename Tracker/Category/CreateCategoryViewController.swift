@@ -90,7 +90,7 @@ final class CreateCategoryViewController: UIViewController {
         delegate?.reload()
         dismiss(animated: true, completion: nil)
     }
-
+    
     @objc
     private func updateCreateCategoryButton() {
         if createCategoryName.text?.isEmpty == true {

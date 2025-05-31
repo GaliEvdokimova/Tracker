@@ -31,7 +31,7 @@ final class TabBarController: UITabBarController {
             tabBarAppearance.configureWithDefaultBackground()
             tabBarAppearance.backgroundColor = UIColor.ypWhite
             UITabBar.appearance().standardAppearance = tabBarAppearance
-
+            
             if #available(iOS 15.0, *) {
                 UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
             }

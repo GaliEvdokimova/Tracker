@@ -143,7 +143,6 @@ extension StatisticsViewController: UITableViewDataSource {
         var count = ""
         
         switch indexPath.row {
-            // TODO: - Добавить обработку моковых данных "0"
         case 0:
             count = "0"
         case 1:

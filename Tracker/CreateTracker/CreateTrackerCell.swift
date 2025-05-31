@@ -9,7 +9,7 @@ import UIKit
 
 final class CreateTrackerCell: UITableViewCell {
     static let cellIdentifier = "CreateTrackerCell"
-  
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
