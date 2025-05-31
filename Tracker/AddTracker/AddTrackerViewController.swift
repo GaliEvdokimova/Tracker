@@ -9,11 +9,12 @@ import UIKit
 
 final class AddTrackerViewController: UIViewController {
     weak var trackersViewController: TrackersViewController?
+    // MARK: - UI-Elements
     private lazy var titleAddTrackersLabel: UILabel = {
         let label = UILabel()
         label.text = "Создание трекера"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -22,9 +23,9 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -34,24 +35,24 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Нерегулярное событие", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupAddTrackersView()
         setupAddTrackersViewConstrains()
     }
-    
+    // MARK: - Actions
     @objc
     private func didTapHabitButton() {
-        let createTracker = CreateTrackerViewController()
+        let createTracker = CreateTrackerViewController(editTracker: false)
         createTracker.irregularEvent = false
         createTracker.delegate = self.trackersViewController
         present(createTracker, animated: true, completion: nil)
@@ -59,14 +60,15 @@ final class AddTrackerViewController: UIViewController {
     
     @objc
     private func didTapIrregularEventButton() {
-        let createTracker = CreateTrackerViewController()
+        let createTracker = CreateTrackerViewController(editTracker: false)
         createTracker.irregularEvent = true
         createTracker.delegate = self.trackersViewController
         present(createTracker, animated: true, completion: nil)
     }
-    
+    // MARK: - Setup View
     private func setupAddTrackersView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
+        habitButton.backgroundColor = .ypBlack
         view.addSubview(titleAddTrackersLabel)
         view.addSubview(habitButton)
         view.addSubview(irregularEventButton)

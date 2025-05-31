@@ -20,6 +20,7 @@ protocol TrackerRecordStoreDelegate: AnyObject {
 }
 
 final class TrackerRecordStore: NSObject {
+    // MARK: - Public Properties
     weak var delegate: TrackerRecordStoreDelegate?
     var trackerRecords: [TrackerRecord] {
         guard
@@ -28,6 +29,7 @@ final class TrackerRecordStore: NSObject {
         else { return [] }
         return trackers
     }
+    // MARK: - Private Properties
     private let context: NSManagedObjectContext
     private lazy var fetchedResultsController = {
         let fetchRequest = TrackerRecordCoreData.fetchRequest()
@@ -43,6 +45,7 @@ final class TrackerRecordStore: NSObject {
         try? controller.performFetch()
         return controller
     }()
+    // MARK: - Initializers
     convenience override init() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             self.init()
@@ -57,6 +60,7 @@ final class TrackerRecordStore: NSObject {
         super.init()
         fetchedResultsController.delegate = self
     }
+    // MARK: - Public Methods
     func addTrackerRecord(_ trackerRecord: TrackerRecord) throws {
         let trackerRecordCoreData = TrackerRecordCoreData(context: context)
         updateExistingTrackerRecord(trackerRecordCoreData, with: trackerRecord)
@@ -88,6 +92,7 @@ final class TrackerRecordStore: NSObject {
         let result = try context.fetch(fetchRequest)
         return result.first
     }
+    // MARK: - Private Methods
     private func trackerRecord(
         from trackersRecordCoreData: TrackerRecordCoreData
     ) throws -> TrackerRecord {
@@ -104,6 +109,7 @@ final class TrackerRecordStore: NSObject {
             date: date)
     }
 }
+// MARK: - NSFetchedResultsControllerDelegate
 extension TrackerRecordStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>
@@ -111,4 +117,3 @@ extension TrackerRecordStore: NSFetchedResultsControllerDelegate {
         delegate?.recordStore()
     }
 }
-
