@@ -6,10 +6,10 @@
   
 */
 
-"app.title" = "Trackers";
-"filter.title" = "Filters";
-"statistic.title" = "Statistic";
-"trackers.initial.label.text" = "What are we tracking?";
-"trackers.nothing.found" = "Nothing found";
-"searchBar.placeholder" = "Search";
-"cancel.button" = "Cancel";
+"app.title" = "Трекеры";
+"filter.title" = "Фильтры";
+"statistic.title" = "Статистика";
+"trackers.initial.label.text" = "Что будем отслеживать?";
+"trackers.nothing.found" = "Ничего не найдено";
+"searchBar.placeholder" = "Поиск";
+"cancel.button" = "Отмена";

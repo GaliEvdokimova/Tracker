@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class StaticticsViewController: UIViewController {
+final class StatisticsViewController: UIViewController {
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     // MARK: - UI-Elements
@@ -100,7 +100,7 @@ final class StaticticsViewController: UIViewController {
     }
 }
 // MARK: - UITableViewDelegate
-extension StaticticsViewController: UITableViewDelegate {
+extension StatisticsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 102
@@ -112,7 +112,7 @@ extension StaticticsViewController: UITableViewDelegate {
     }
 }
 // MARK: - UITableViewDataSource
-extension StaticticsViewController: UITableViewDataSource {
+extension StatisticsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         return 4
@@ -163,7 +163,7 @@ extension StaticticsViewController: UITableViewDataSource {
     }
 }
 // MARK: - TrackerRecordStoreDelegate
-extension StaticticsViewController: TrackerRecordStoreDelegate {
+extension StatisticsViewController: TrackerRecordStoreDelegate {
     func recordStore() {
         completedTrackers = trackerRecordStore.trackerRecords
         statisticsTableView.reloadData()

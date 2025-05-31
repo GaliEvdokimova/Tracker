@@ -18,13 +18,13 @@ final class TabBarController: UITabBarController {
             selectedImage: nil
         )
         
-        let staticticsViewController = StaticticsViewController()
-        staticticsViewController.tabBarItem = UITabBarItem(
+        let statisticsViewController = StatisticsViewController()
+        statisticsViewController.tabBarItem = UITabBarItem(
             title: NSLocalizedString("statistic.title", comment: ""),
             image: UIImage(named: "Bunny"),
             selectedImage: nil
         )
-        self.viewControllers = [trackersViewController, staticticsViewController]
+        self.viewControllers = [trackersViewController, statisticsViewController]
         
         if #available(iOS 13.0, *) {
             let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
