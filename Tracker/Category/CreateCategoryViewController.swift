@@ -22,8 +22,8 @@ final class CreateCategoryViewController: UIViewController {
         let label = UILabel()
         label.text = "Новая категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,7 +31,7 @@ final class CreateCategoryViewController: UIViewController {
     private lazy var createCategoryName: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название категории"
-        textField.textColor = .ypBlack
+        textField.textColor = .ypCustomBlack
         textField.layer.cornerRadius = 16
         textField.backgroundColor = .ypBackground
         textField.clearButtonMode = .whileEditing
@@ -49,9 +49,9 @@ final class CreateCategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlack
+        button.backgroundColor = .ypCustomBlack
         button.addTarget(self, action: #selector(didTapCreateCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -59,6 +59,7 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypCustomWhite
         addTapGestureToHideKeyboard()
         setupCreateCategoryView()
         setupCreateCategoryViewConstrains()
@@ -98,12 +99,12 @@ final class CreateCategoryViewController: UIViewController {
             createCategoryButton.backgroundColor = .ypGray
         } else {
             createCategoryButton.isEnabled = true
-            createCategoryButton.backgroundColor = .ypBlack
+            createCategoryButton.backgroundColor = .ypCustomBlack
         }
     }
     // MARK: - Setup View
     private func setupCreateCategoryView() {
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         createCategoryName.delegate = self
         createCategoryName.addTarget(self,
                                      action: #selector(updateCreateCategoryButton),

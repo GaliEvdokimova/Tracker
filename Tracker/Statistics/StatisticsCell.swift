@@ -47,7 +47,7 @@ final class StatisticsCell: UITableViewCell {
     private lazy var insideView: UIView = {
         let insideView = UIView()
         insideView.layer.cornerRadius = 16
-        insideView.backgroundColor = .ypWhite
+        insideView.backgroundColor = .ypCustomWhite
         insideView.translatesAutoresizingMaskIntoConstraints = false
         return insideView
     }()

@@ -21,7 +21,7 @@ final class TabBarController: UITabBarController {
         let statisticsViewController = StatisticsViewController()
         statisticsViewController.tabBarItem = UITabBarItem(
             title: NSLocalizedString("statistic.title", comment: ""),
-            image: UIImage(named: "Bunny"),
+            image: UIImage(named: "Rabbit"),
             selectedImage: nil
         )
         self.viewControllers = [trackersViewController, statisticsViewController]
@@ -29,7 +29,7 @@ final class TabBarController: UITabBarController {
         if #available(iOS 13.0, *) {
             let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
             tabBarAppearance.configureWithDefaultBackground()
-            tabBarAppearance.backgroundColor = UIColor.ypWhite
+            tabBarAppearance.backgroundColor = UIColor.ypCustomWhite
             UITabBar.appearance().standardAppearance = tabBarAppearance
             
             if #available(iOS 15.0, *) {

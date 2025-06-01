@@ -73,7 +73,7 @@ final class TrackersViewController: UIViewController {
         let label = UILabel()
         label.text = NSLocalizedString("trackers.initial.label.text", comment: "")
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlack
+        label.textColor = .ypCustomBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -90,7 +90,7 @@ final class TrackersViewController: UIViewController {
         let label = UILabel()
         label.text = NSLocalizedString("trackers.nothing.found", comment: "")
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlack
+        label.textColor = .ypCustomBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -99,7 +99,7 @@ final class TrackersViewController: UIViewController {
         let button = UIButton()
         button.setTitle(NSLocalizedString("filter.title", comment: ""),
                         for: .normal)
-        button.setTitleColor(.ypBlack, for: .normal)
+        button.setTitleColor(.ypCustomBlack, for: .normal)
         button.backgroundColor = .ypBlue
         button.layer.cornerRadius = 16
         button.addTarget(self,
@@ -111,6 +111,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypCustomWhite
         addTapGestureToHideKeyboard()
         dateFiltering()
         coreDataSetup()
@@ -150,7 +151,7 @@ final class TrackersViewController: UIViewController {
     private func setupNavBar() {
         navigationItem.title = NSLocalizedString("app.title", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .ypBlack
+        navigationController?.navigationBar.tintColor = .ypCustomBlack
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "Add tracker"),
             style: .plain,
@@ -163,7 +164,7 @@ final class TrackersViewController: UIViewController {
     }
     
     private func setupTrackersView() {
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         
         view.addSubview(initialImage)
         view.addSubview(initialLabel)
@@ -297,10 +298,10 @@ final class TrackersViewController: UIViewController {
                 let textCondition = tracker.title.contains(filterText ?? "") ||
                 (filterText ?? "").isEmpty
                 let dateCondition = tracker.schedule.contains { day in
-                    guard let cerrentDate = self.selectedDay else {
+                    guard let currentDate = self.selectedDay else {
                         return true
                     }
-                    return day.rawValue == cerrentDate
+                    return day.rawValue == currentDate
                 }
                 var pinnedCondition = true
                 if category.title != pinnedCategoryName {

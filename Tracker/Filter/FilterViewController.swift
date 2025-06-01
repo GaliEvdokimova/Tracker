@@ -24,15 +24,15 @@ final class FilterViewController: UIViewController {
         let label = UILabel()
         label.text = "Фильтры"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var filterTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypWhite
+        tableView.backgroundColor = .ypCustomWhite
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
@@ -45,6 +45,7 @@ final class FilterViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypCustomWhite
         setupFilterTableView()
         setupFilterView()
         setupFilterViewConstrains()
@@ -58,7 +59,7 @@ final class FilterViewController: UIViewController {
     }
     
     private func setupFilterView() {
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         view.addSubview(titleLabel)
         view.addSubview(filterTableView)
     }
@@ -140,7 +141,7 @@ extension FilterViewController: UITableViewDataSource {
         
         cell.textLabel?.text = filterText.rawValue
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .ypBlack
+        cell.textLabel?.textColor = .ypCustomBlack
         cell.layer.masksToBounds = true
         cell.selectionStyle = .none
         

@@ -19,8 +19,8 @@ final class ScheduleViewController: UIViewController {
         let label = UILabel()
         label.text = "Расписание"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,9 +42,9 @@ final class ScheduleViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlack
+        button.backgroundColor = .ypCustomBlack
         button.addTarget(self,
                          action: #selector(doneButtonTapped),
                          for: .touchUpInside)
@@ -55,7 +55,7 @@ final class ScheduleViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .ypCustomWhite
         setupTableView()
         setupScheduleView()
         setupScheduleViewConstrains()
@@ -82,7 +82,7 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func setupScheduleView() {
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scheduleTableView)
@@ -147,7 +147,7 @@ extension ScheduleViewController: UITableViewDataSource {
         
         cell.textLabel?.text = "\(days.daysName)"
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .ypBlack
+        cell.textLabel?.textColor = .ypCustomBlack
         cell.layer.masksToBounds = true
         return cell
     }

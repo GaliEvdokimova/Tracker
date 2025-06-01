@@ -16,8 +16,8 @@ final class CategoryViewController: UIViewController {
         let label = UILabel()
         label.text = "Категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -34,7 +34,7 @@ final class CategoryViewController: UIViewController {
         let label = UILabel()
         label.text = "Привычки и события можно\n объединять по смыслу"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlack
+        label.textColor = .ypCustomBlack
         label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ final class CategoryViewController: UIViewController {
     
     private lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypWhite
+        tableView.backgroundColor = .ypCustomWhite
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = true
@@ -58,9 +58,9 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlack
+        button.backgroundColor = .ypCustomBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -68,6 +68,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypCustomWhite
         categoryViewModel.categoryStore()
         setupCategoryTableView()
         setupCategoryView()
@@ -90,7 +91,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupCategoryView() {
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         view.addSubview(titleLabel)
         view.addSubview(stubImage)
         view.addSubview(stubLabel)
@@ -240,7 +241,7 @@ extension CategoryViewController: UITableViewDataSource {
             let category = categoryViewModel.categories[indexPath.row]
             cell.textLabel?.text = category.title
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            cell.textLabel?.textColor = .ypBlack
+            cell.textLabel?.textColor = .ypCustomBlack
             cell.layer.masksToBounds = true
             
             if category.title == categoryViewModel.selectedCategory?.title {

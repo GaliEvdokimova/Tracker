@@ -15,12 +15,12 @@ final class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = "Статистика"
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .ypBlack
+        label.textColor = .ypCustomBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let staticticsImage: UIImageView = {
+    private let statisticsImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub statistics")
         imageView.layer.masksToBounds = true
@@ -28,11 +28,11 @@ final class StatisticsViewController: UIViewController {
         return imageView
     }()
     
-    private let staticticsLabel: UILabel = {
+    private let statisticsLabel: UILabel = {
         let label = UILabel()
         label.text = "Анализировать пока нечего"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlack
+        label.textColor = .ypCustomBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -49,41 +49,41 @@ final class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         trackerRecordStore.delegate = self
         completedTrackers = trackerRecordStore.trackerRecords
-        
+        view.backgroundColor = .ypCustomWhite
         setupStatisticsTableView()
-        setupStaticticsView()
-        setupStaticticsViewConstrains()
+        setupStatisticsView()
+        setupStatisticsViewConstrains()
         showInitialStub()
     }
     // MARK: - Setup View
     private func setupStatisticsTableView() {
-        statisticsTableView.backgroundColor = .ypWhite
+        statisticsTableView.backgroundColor = .ypCustomWhite
         statisticsTableView.delegate = self
         statisticsTableView.dataSource = self
         statisticsTableView.register(StatisticsCell.self, forCellReuseIdentifier: StatisticsCell.cellIdentifier)
         statisticsTableView.reloadData()
     }
     
-    private func setupStaticticsView() {
-        view.backgroundColor = .ypWhite
+    private func setupStatisticsView() {
+        view.backgroundColor = .ypCustomWhite
         view.addSubview(titleLabel)
-        view.addSubview(staticticsImage)
-        view.addSubview(staticticsLabel)
+        view.addSubview(statisticsImage)
+        view.addSubview(statisticsLabel)
         view.addSubview(statisticsTableView)
     }
     
-    private func setupStaticticsViewConstrains() {
+    private func setupStatisticsViewConstrains() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
-            staticticsImage.heightAnchor.constraint(equalToConstant: 80),
-            staticticsImage.widthAnchor.constraint(equalToConstant: 80),
-            staticticsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            staticticsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            statisticsImage.heightAnchor.constraint(equalToConstant: 80),
+            statisticsImage.widthAnchor.constraint(equalToConstant: 80),
+            statisticsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            statisticsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            staticticsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            staticticsLabel.topAnchor.constraint(equalTo: staticticsImage.bottomAnchor, constant: 8),
+            statisticsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            statisticsLabel.topAnchor.constraint(equalTo: statisticsImage.bottomAnchor, constant: 8),
             
             statisticsTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 77),
             statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -95,7 +95,7 @@ final class StatisticsViewController: UIViewController {
     private func showInitialStub() {
         let empty = completedTrackers.isEmpty
         statisticsTableView.isHidden = empty
-        staticticsImage.isHidden = !empty
+        statisticsImage.isHidden = !empty
         statisticsTableView.isHidden = empty
     }
 }

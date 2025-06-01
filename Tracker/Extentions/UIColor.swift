@@ -9,15 +9,13 @@ import UIKit
 
 extension UIColor {
     // Colors
+    static var ypCustomBlack: UIColor { UIColor(named: "CustomBlack") ?? UIColor.black}
+    static var ypCustomWhite: UIColor { UIColor(named: "CustomWhite") ?? UIColor.white}
     static var ypBackground: UIColor { UIColor(named: "Background") ?? UIColor.lightGray}
-    static var ypBlack: UIColor { UIColor(named: "Black") ?? UIColor.black}
-    static var ypBlackAny: UIColor { UIColor(named: "BlackAny") ?? UIColor.black}
     static var ypBlue: UIColor { UIColor(named: "Blue") ?? UIColor.blue}
     static var ypGray: UIColor { UIColor(named: "Gray") ?? UIColor.gray}
     static var ypLightGray: UIColor { UIColor(named: "Light Gray") ?? UIColor.lightGray}
     static var ypRed: UIColor { UIColor(named: "Red") ?? UIColor.red}
-    static var ypWhite: UIColor { UIColor(named: "White") ?? UIColor.white}
-    static var ypWhiteAny: UIColor { UIColor(named: "WhiteAny") ?? UIColor.white}
     // Color selections
     static var ypcolorSelection1: UIColor { UIColor(named: "Color selection 1") ?? UIColor.red}
     static var ypcolorSelection2: UIColor { UIColor(named: "Color selection 2") ?? UIColor.orange}

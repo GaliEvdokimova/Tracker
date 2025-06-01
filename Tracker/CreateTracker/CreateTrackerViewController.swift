@@ -47,8 +47,8 @@ final class CreateTrackerViewController: UIViewController {
         let label = UILabel()
         label.text = "Новая привычка"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlack
-        label.backgroundColor = .ypWhite
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,7 +57,7 @@ final class CreateTrackerViewController: UIViewController {
         let label = UILabel()
         label.text = "0 дней"
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        label.textColor = .ypBlack
+        label.textColor = .ypCustomBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -65,7 +65,7 @@ final class CreateTrackerViewController: UIViewController {
     private lazy var createTrackerName: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название трекера"
-        textField.textColor = .ypBlack
+        textField.textColor = .ypCustomBlack
         textField.layer.cornerRadius = 16
         textField.backgroundColor = .ypBackground
         textField.clearButtonMode = .whileEditing
@@ -102,7 +102,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = .ypWhite
+        scrollView.backgroundColor = .ypCustomWhite
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isScrollEnabled = true
@@ -112,7 +112,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .ypWhite
+        collectionView.backgroundColor = .ypCustomWhite
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
         return collectionView
@@ -136,7 +136,7 @@ final class CreateTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Создать", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypGray
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -166,7 +166,7 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTapGestureToHideKeyboard()
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         
         setupCreateTrackerNameTextField()
         setupTableView()
@@ -206,7 +206,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func setupCreateTrackerView() {
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .ypCustomWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scrollView)
@@ -308,7 +308,7 @@ final class CreateTrackerViewController: UIViewController {
             isColorSelected != nil
         {
             createButton.isEnabled = true
-            createButton.backgroundColor = .ypBlack
+            createButton.backgroundColor = .ypCustomBlack
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .ypGray
@@ -464,7 +464,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.text = cellButtonText[indexPath.row]
-        cell.textLabel?.textColor = .ypBlack
+        cell.textLabel?.textColor = .ypCustomBlack
         cell.layer.masksToBounds = true
         
         cell.accessoryType = .disclosureIndicator
