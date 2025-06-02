@@ -99,7 +99,7 @@ final class TrackersViewController: UIViewController {
         let button = UIButton()
         button.setTitle(NSLocalizedString("filter.title", comment: ""),
                         for: .normal)
-        button.setTitleColor(.ypCustomBlack, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .ypBlue
         button.layer.cornerRadius = 16
         button.addTarget(self,
