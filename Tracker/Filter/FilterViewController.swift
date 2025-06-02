@@ -24,7 +24,7 @@ final class FilterViewController: UIViewController {
         let label = UILabel()
         label.text = "Фильтры"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypCustomBlack
+        label.textColor = .ypCustomWhite
         label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

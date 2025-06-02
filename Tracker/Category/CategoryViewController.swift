@@ -58,7 +58,8 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypCustomWhite, for: .normal)
+//        button.setTitleColor(.ypCustomWhite, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypCustomBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
