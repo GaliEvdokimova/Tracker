@@ -167,7 +167,7 @@ extension CategoryViewController: UITableViewDelegate {
         }
         if let cell = tableView.cellForRow(at: indexPath) as? CategoryCell {
             cell.accessoryType = .checkmark
-            cell.tintColor = .ypBlue
+            cell.tintColor = .ypLightGray
             categoryViewModel.selectCategory(indexPath.row)
             tableView.reloadData()
             tableView.deselectRow(at: indexPath, animated: true)

@@ -12,7 +12,7 @@ final class CategoryCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .ypBackground
+        backgroundColor = .ypLightGray
     }
     
     required init?(coder: NSCoder) {

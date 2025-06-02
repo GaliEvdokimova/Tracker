@@ -67,7 +67,7 @@ final class CreateTrackerViewController: UIViewController {
         textField.placeholder = "Введите название трекера"
         textField.textColor = .ypCustomBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackground
+        textField.backgroundColor = .ypContext
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -90,7 +90,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypBackground
+        tableView.backgroundColor = .ypContext
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false

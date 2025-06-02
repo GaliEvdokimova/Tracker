@@ -33,7 +33,7 @@ final class CreateCategoryViewController: UIViewController {
         textField.placeholder = "Введите название категории"
         textField.textColor = .ypCustomBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackground
+        textField.backgroundColor = .ypContext
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always

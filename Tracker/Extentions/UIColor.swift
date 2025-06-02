@@ -11,7 +11,7 @@ extension UIColor {
     // Colors
     static var ypCustomBlack: UIColor { UIColor(named: "CustomBlack") ?? UIColor.black}
     static var ypCustomWhite: UIColor { UIColor(named: "CustomWhite") ?? UIColor.white}
-    static var ypBackground: UIColor { UIColor(named: "Background") ?? UIColor.lightGray}
+    static var ypContext: UIColor { UIColor(named: "Context") ?? UIColor.lightGray}
     static var ypBlue: UIColor { UIColor(named: "Blue") ?? UIColor.blue}
     static var ypGray: UIColor { UIColor(named: "Gray") ?? UIColor.gray}
     static var ypLightGray: UIColor { UIColor(named: "Light Gray") ?? UIColor.lightGray}

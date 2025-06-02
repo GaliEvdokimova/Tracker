@@ -27,7 +27,7 @@ final class ScheduleViewController: UIViewController {
     
     private lazy var scheduleTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypBackground
+        tableView.backgroundColor = .ypContext
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
