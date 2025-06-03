@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Galina evdokimova on 29.05.2025.
+  
+*/
+
+"app.title" = "Трекеры";
+"filter.title" = "Фильтры";
+"statistic.title" = "Статистика";
+"trackers.initial.label.text" = "Что будем отслеживать?";
+"trackers.nothing.found" = "Ничего не найдено";
+"searchBar.placeholder" = "Поиск";
+"cancel.button" = "Отмена";

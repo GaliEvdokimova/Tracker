@@ -8,17 +8,22 @@
 import UIKit
 
 protocol CreateCategoryViewControllerDelegate: AnyObject {
-    func addNewCategory(category: String)
+    func reload()
 }
 
 final class CreateCategoryViewController: UIViewController {
     weak var delegate: CreateCategoryViewControllerDelegate?
+    var existingCategory: TrackerCategory?
+    private var categoryViewModel = CategoryViewModel()
+    private let errorReporting = ErrorReporting()
+    var isEditCategory = Bool()
+    // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Новая категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -26,9 +31,9 @@ final class CreateCategoryViewController: UIViewController {
     private lazy var createCategoryName: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название категории"
-        textField.textColor = .ypBlackDay
+        textField.textColor = .ypCustomBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackgroundDay
+        textField.backgroundColor = .ypContext
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -44,28 +49,46 @@ final class CreateCategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypCustomBlack
         button.addTarget(self, action: #selector(didTapCreateCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        addTapGestureRecognizer()
+        view.backgroundColor = .ypCustomWhite
+        addTapGestureToHideKeyboard()
         setupCreateCategoryView()
         setupCreateCategoryViewConstrains()
         updateCreateCategoryButton()
     }
+    // MARK: - Public Methods
+    func editCategory(_ category: TrackerCategory) {
+        titleLabel.text = "Редактирование категории"
+        existingCategory = category
+        createCategoryName.text = category.title
+    }
+    
     // MARK: - Actions
     @objc
     private func didTapCreateCategoryButton() {
         guard let newCategory = createCategoryName.text, !newCategory.isEmpty else {
             return
         }
-        delegate?.addNewCategory(category: newCategory)
+        if isEditCategory {
+            categoryViewModel.editCategory(category: existingCategory, title: newCategory)
+        } else if categoryViewModel.checkingSavedCategory(newCategory) {
+            errorReporting.showAlert(
+                title: "Warning!",
+                message: "This category already exists.\nPlease, create another name.",
+                controller: self)
+        } else {
+            categoryViewModel.addCategory(newCategory)
+        }
+        delegate?.reload()
         dismiss(animated: true, completion: nil)
     }
     
@@ -76,12 +99,12 @@ final class CreateCategoryViewController: UIViewController {
             createCategoryButton.backgroundColor = .ypGray
         } else {
             createCategoryButton.isEnabled = true
-            createCategoryButton.backgroundColor = .ypBlackDay
+            createCategoryButton.backgroundColor = .ypCustomBlack
         }
     }
-    
+    // MARK: - Setup View
     private func setupCreateCategoryView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypCustomWhite
         createCategoryName.delegate = self
         createCategoryName.addTarget(self,
                                      action: #selector(updateCreateCategoryButton),
@@ -108,7 +131,7 @@ final class CreateCategoryViewController: UIViewController {
         ])
     }
 }
-
+// MARK: - UITextFieldDelegate
 extension CreateCategoryViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
@@ -128,4 +151,5 @@ extension CreateCategoryViewController: UITextFieldDelegate {
         return true
     }
 }
+
 

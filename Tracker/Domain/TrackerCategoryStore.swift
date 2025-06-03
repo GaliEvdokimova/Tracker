@@ -20,6 +20,7 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
 }
 
 final class TrackerCategoryStore: NSObject {
+    // MARK: - Public Properties
     weak var delegate: TrackerCategoryStoreDelegate?
     var trackerCategories: [TrackerCategory] {
         guard
@@ -45,6 +46,7 @@ final class TrackerCategoryStore: NSObject {
         return controller
     }()
     private let trackerStore = TrackerStore()
+    // MARK: - Initializers
     convenience override init() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             self.init()
@@ -59,6 +61,7 @@ final class TrackerCategoryStore: NSObject {
         super.init()
         fetchedResultsController.delegate = self
     }
+    // MARK: - Public Methods
     func addCategory(_ category: TrackerCategory) throws {
         let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
         trackerCategoryCoreData.title = category.title
@@ -66,33 +69,48 @@ final class TrackerCategoryStore: NSObject {
         try context.save()
     }
     
-    func addNewTrackerToCategory(to title: String?, tracker: Tracker) throws {
+    func addTrackerToCategory(to category: TrackerCategory, tracker: Tracker) throws {
         let trackerCoreData = try trackerStore.createTracker(tracker)
         
-        if let category = try? fetchTrackerCategory(with: title) {
+        if let category = try? fetchTrackerCategory(with: category) {
             guard let trackers = category.trackers else { return }
             guard var newTrackerCoreData = trackers.allObjects as? [TrackerCoreData] else { return }
             newTrackerCoreData.append(trackerCoreData)
             category.trackers = NSSet(array: newTrackerCoreData)
         } else {
             let newCategory = TrackerCategoryCoreData(context: context)
-            newCategory.title = title
+            newCategory.title = category.title
             newCategory.trackers = NSSet(array: [trackerCoreData])
         }
         try context.save()
     }
     
-    func fetchTrackerCategory(with title: String?) throws -> TrackerCategoryCoreData? {
-        guard let title = title else {
+    func deleteCategory(_ category: TrackerCategory?) throws {
+        let deleteCategory = try fetchTrackerCategory(with: category)
+        guard let deleteCategory = deleteCategory else { return }
+        context.delete(deleteCategory)
+        try context.save()
+    }
+    
+    func editCaregory(category: TrackerCategory?, title: String) throws {
+        let editCaregory = try fetchTrackerCategory(with: category)
+        guard let editCaregory = editCaregory else { return }
+        editCaregory.title = title
+        try context.save()
+    }
+    
+    func fetchTrackerCategory(with category: TrackerCategory?) throws -> TrackerCategoryCoreData? {
+        guard let category = category else {
             throw TrackerCategoryStoreError.decodingErrorInvalidFetchTitle
         }
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(
             format: "title == %@",
-            title as CVarArg)
+            category.title as CVarArg)
         let result = try context.fetch(fetchRequest)
         return result.first
     }
+    // MARK: - Private Methods
     private func trackerCategory(
         from trackersCategoryCoreData: TrackerCategoryCoreData
     ) throws -> TrackerCategory {
@@ -109,6 +127,7 @@ final class TrackerCategoryStore: NSObject {
             trackers: trackerStore.trackers.filter { trackers.map {$0.id}.contains($0.id)})
     }
 }
+// MARK: - NSFetchedResultsControllerDelegate
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>
