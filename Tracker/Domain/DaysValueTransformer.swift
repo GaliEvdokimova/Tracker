@@ -5,7 +5,7 @@
 //  Created by Galina evdokimova on 18.05.2025.
 //
 
-import UIKit
+import Foundation
 
 @objc(DaysValueTransformer)
 final class DaysValueTransformer: ValueTransformer {
@@ -13,13 +13,13 @@ final class DaysValueTransformer: ValueTransformer {
     override class func allowsReverseTransformation() -> Bool { true }
     
     override func transformedValue(_ value: Any?) -> Any? {
-        guard let days = value as? [DayOfWeek] else { return nil }
+        guard let days = value as? [WeekDay] else { return nil }
         
         do {
             let encode = try JSONEncoder().encode(days)
             return encode
         } catch {
-            print("Failed to transform `WeekDay` to `JSON`")
+            assertionFailure("Failed to transform `WeekDay` to `JSON`")
             return nil
         }
     }
@@ -28,7 +28,7 @@ final class DaysValueTransformer: ValueTransformer {
         guard let data = value as? NSData else { return nil }
         
         do {
-            let decode = try JSONDecoder().decode([DayOfWeek].self, from: data as Data)
+            let decode = try JSONDecoder().decode([WeekDay].self, from: data as Data)
             return decode
         } catch {
             assertionFailure("Failed to transform `JSON` to `WeekDay`")
@@ -43,4 +43,3 @@ final class DaysValueTransformer: ValueTransformer {
         )
     }
 }
-

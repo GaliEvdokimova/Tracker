@@ -14,24 +14,26 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 final class ScheduleViewController: UIViewController {
     weak var delegate: ScheduleViewControllerDelegate?
     private var selectedDays: [Int] = []
-    private var titleLabel: UILabel = {
+    // MARK: - UI-Elements
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Расписание"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var scheduleTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypBackgroundDay
+        tableView.backgroundColor = .ypContext
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
         tableView.allowsSelection = false
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -40,9 +42,9 @@ final class ScheduleViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypCustomBlack
         button.addTarget(self,
                          action: #selector(doneButtonTapped),
                          for: .touchUpInside)
@@ -50,14 +52,15 @@ final class ScheduleViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .ypCustomWhite
         setupTableView()
         setupScheduleView()
         setupScheduleViewConstrains()
     }
-    
+    // MARK: - Actions
     @objc
     private func doneButtonTapped() {
         for (index, list) in scheduleTableView.visibleCells.enumerated() {
@@ -69,7 +72,7 @@ final class ScheduleViewController: UIViewController {
         self.delegate?.saveSelectedDays(list: selectedDays)
         dismiss(animated: true)
     }
-    
+    // MARK: - Setup View
     private func setupTableView() {
         scheduleTableView.delegate = self
         scheduleTableView.dataSource = self
@@ -79,7 +82,7 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func setupScheduleView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypCustomWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scheduleTableView)
@@ -103,7 +106,7 @@ final class ScheduleViewController: UIViewController {
         ])
     }
 }
-
+// MARK: - UITableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -126,7 +129,7 @@ extension ScheduleViewController: UITableViewDelegate {
         scheduleTableView.deselectRow(at: indexPath, animated: true)
     }
 }
-
+// MARK: - UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
@@ -140,11 +143,11 @@ extension ScheduleViewController: UITableViewDataSource {
             withIdentifier: ScheduleCell.cellIdentifier,
             for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         
-        let days = DayOfWeek.allCases[indexPath.row]
+        let days = WeekDay.allCases[indexPath.row]
         
-        cell.textLabel?.text = "\(days.nameOfDays)"
+        cell.textLabel?.text = "\(days.daysName)"
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .ypBlackDay
+        cell.textLabel?.textColor = .ypCustomBlack
         cell.layer.masksToBounds = true
         return cell
     }

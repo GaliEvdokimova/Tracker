@@ -12,19 +12,23 @@ final class ScheduleCell: UITableViewCell {
     var selectedSwitcher = false
     
     private lazy var switcher: UISwitch = {
-        let swit = UISwitch()
-        swit.onTintColor = .ypBlue
-        swit.addTarget(self, action: #selector(switcherTapped), for: .touchUpInside)
-        swit.translatesAutoresizingMaskIntoConstraints = false
-        return swit
-    } ()
+        let swith = UISwitch()
+        swith.onTintColor = .ypBlue
+        swith.addTarget(self,
+                        action: #selector(switcherTapped),
+                        for: .touchUpInside)
+        swith.translatesAutoresizingMaskIntoConstraints = false
+        return swith
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        backgroundColor = .ypContext
+        clipsToBounds = true
+        
         addSubview(switcher)
         self.accessoryView = switcher
-        backgroundColor = .ypBackgroundDay
-        clipsToBounds = true
         
         NSLayoutConstraint.activate([
             switcher.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -33,7 +37,7 @@ final class ScheduleCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) wasn't implemented")
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc

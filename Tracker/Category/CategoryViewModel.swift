@@ -9,20 +9,10 @@ import Combine
 
 final class CategoryViewModel {
     private var trackerCategoryStore = TrackerCategoryStore()
-    private(set) var categories: [TrackerCategory] = [] {
-        didSet {
-            onCategoriesUpdated?()
-        }
-    }
+    private(set) var categories: [TrackerCategory] = []
     
-    var selectedCategory: TrackerCategory? {
-        didSet {
-            onCategorySelected?(selectedCategory)
-        }
-    }
-    
-    var onCategoriesUpdated: (() -> Void)?
-    var onCategorySelected: ((TrackerCategory?) -> Void)?
+    @Observable
+    private(set) var selectedCategory: TrackerCategory?
     
     init() {
         trackerCategoryStore.delegate = self
@@ -37,23 +27,42 @@ final class CategoryViewModel {
         }
     }
     
-    func addNewTrackerToCategory(to title: String?, tracker: Tracker) {
-            do {
-                try trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
-            } catch {
-                print("Error adding new tracker to category: \(error.localizedDescription)")
-            }
+    func addTrackerToCategory(to category: TrackerCategory, tracker: Tracker) {
+        do {
+            try self.trackerCategoryStore.addTrackerToCategory(to: category, tracker: tracker)
+        } catch {
+            // TODO: "Обработать ошибку"
+            print("Error add new tracker to category: \(error.localizedDescription)")
         }
+    }
+    
+    func deleteCategory(_ category: TrackerCategory) {
+        do {
+            try self.trackerCategoryStore.deleteCategory(category)
+        } catch {
+            print("Error delete category: \(error.localizedDescription)")
+        }
+    }
+    
+    func editCategory(category: TrackerCategory?, title: String) {
+        do {
+            try self.trackerCategoryStore.editCaregory(category: category, title: title)
+        } catch {
+            print("Error edit category: \(error.localizedDescription)")
+        }
+    }
     
     func selectCategory(_ index: Int) {
-        guard index < categories.count else { return }
-        selectedCategory = categories[index]
+        self.selectedCategory = self.categories[index]
+    }
+    
+    func checkingSavedCategory(_ title: String) -> Bool {
+        return categories.contains(where: { $0.title == title })
     }
 }
-
+// MARK: - TrackerCategoryStoreDelegate
 extension CategoryViewModel: TrackerCategoryStoreDelegate {
     func categoryStore() {
         self.categories = trackerCategoryStore.trackerCategories
     }
 }
-

@@ -8,14 +8,16 @@
 import UIKit
 
 final class CategoryViewController: UIViewController {
-    let categoryViewModel: CategoryViewModel
-    
+    private let analyticsService = AnalyticsService()
+    private(set) var categoryViewModel = CategoryViewModel()
+    private let errorReporting = ErrorReporting()
+    // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypCustomBlack
+        label.backgroundColor = .ypCustomWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -32,7 +34,7 @@ final class CategoryViewController: UIViewController {
         let label = UILabel()
         label.text = "Привычки и события можно\n объединять по смыслу"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypCustomBlack
         label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,12 +43,13 @@ final class CategoryViewController: UIViewController {
     
     private lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypWhiteDay
+        tableView.backgroundColor = .ypCustomWhite
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = true
         tableView.allowsMultipleSelection = false
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -55,51 +58,31 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.setTitleColor(.ypCustomWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypCustomBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    init(viewModel: CategoryViewModel = CategoryViewModel()) {
-        self.categoryViewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-        setupBindings()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypCustomWhite
         categoryViewModel.categoryStore()
         setupCategoryTableView()
         setupCategoryView()
         setupCategoryViewConstrains()
         showInitialStub()
     }
-    
-    private func setupBindings() {
-        categoryViewModel.onCategoriesUpdated = { [weak self] in
-            self?.categoryTableView.reloadData()
-            self?.showInitialStub()
-        }
-        
-        categoryViewModel.onCategorySelected = { [weak self] _ in
-            self?.dismiss(animated: true)
-        }
-    }
-    
+    // MARK: - Actions
     @objc
     private func didTapAddCategoryButton() {
         let createCategoryViewController = CreateCategoryViewController()
         createCategoryViewController.delegate = self
-        present(createCategoryViewController, animated: true)
+        present(createCategoryViewController, animated: true, completion: nil)
     }
-    
+    // MARK: - Setup View
     private func setupCategoryTableView() {
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
@@ -108,10 +91,12 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupCategoryView() {
-        view.backgroundColor = .ypWhiteDay
-        [titleLabel, stubImage, stubLabel, categoryTableView, addCategoryButton].forEach {
-            view.addSubview($0)
-        }
+        view.backgroundColor = .ypCustomWhite
+        view.addSubview(titleLabel)
+        view.addSubview(stubImage)
+        view.addSubview(stubLabel)
+        view.addSubview(categoryTableView)
+        view.addSubview(addCategoryButton)
     }
     
     private func setupCategoryViewConstrains() {
@@ -126,17 +111,19 @@ final class CategoryViewController: UIViewController {
             
             stubLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stubLabel.topAnchor.constraint(equalTo: stubImage.bottomAnchor, constant: 8),
+            
             categoryTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             categoryTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             categoryTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             categoryTableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -16),
+            
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
+    // MARK: - Private Methods
     private func showInitialStub() {
         let emptyCategories = categoryViewModel.categories.isEmpty
         categoryTableView.isHidden = emptyCategories
@@ -144,8 +131,8 @@ final class CategoryViewController: UIViewController {
         stubLabel.isHidden = !emptyCategories
     }
 }
-
-extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
+// MARK: - UITableViewDelegate
+extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -179,13 +166,65 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
         if let cell = tableView.cellForRow(at: indexPath) as? CategoryCell {
             cell.accessoryType = .checkmark
-            cell.tintColor = .ypBlue
+            cell.tintColor = .ypLightGray
             categoryViewModel.selectCategory(indexPath.row)
             tableView.reloadData()
             tableView.deselectRow(at: indexPath, animated: true)
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.dismiss(animated: true)
+        }
     }
     
+    func tableView(_ tableView: UITableView,
+                   contextMenuConfigurationForRowAt indexPath: IndexPath,
+                   point: CGPoint) -> UIContextMenuConfiguration? {
+        let category = self.categoryViewModel.categories[indexPath.row]
+        
+        let configuration = UIContextMenuConfiguration(identifier: nil,
+                                                       previewProvider: nil) { _ -> UIMenu? in
+            let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                guard let self = self else { return }
+                self.analyticsService.report(event: .click, screen: .main, item: .edit)
+                let createCategoryViewController = CreateCategoryViewController()
+                createCategoryViewController.delegate = self
+                createCategoryViewController.editCategory(category)
+                createCategoryViewController.isEditCategory = true
+                self.present(createCategoryViewController, animated: true, completion: nil)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                self.analyticsService.report(event: .click, screen: .main, item: .delete)
+                let alertController = UIAlertController(
+                    title: nil,
+                    message: "Эта категория точно не нужна?",
+                    preferredStyle: .actionSheet)
+                
+                let deleteAction = UIAlertAction(
+                    title: "Удалить",
+                    style: .destructive) { _ in
+                        self.categoryViewModel.deleteCategory(category)
+                        self.categoryTableView.reloadData()
+                        self.showInitialStub()
+                    }
+                alertController.addAction(deleteAction)
+                
+                let cancelAction = UIAlertAction(
+                    title: "Отменить",
+                    style: .cancel,
+                    handler: nil)
+                
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+        return configuration
+    }
+}
+// MARK: - UITableViewDataSource
+extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         return categoryViewModel.categories.count
@@ -202,7 +241,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
             let category = categoryViewModel.categories[indexPath.row]
             cell.textLabel?.text = category.title
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            cell.textLabel?.textColor = .ypBlackDay
+            cell.textLabel?.textColor = .ypCustomBlack
             cell.layer.masksToBounds = true
             
             if category.title == categoryViewModel.selectedCategory?.title {
@@ -215,10 +254,11 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 }
-
+// MARK: - CreateCategoryViewControllerDelegate
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
-    func addNewCategory(category: String) {
-        categoryViewModel.addCategory(category)
+    func reload() {
+        self.categoryTableView.reloadData()
+        showInitialStub()
     }
 }
 
